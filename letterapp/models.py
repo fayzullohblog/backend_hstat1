@@ -19,16 +19,22 @@ class BaseModel(models.Model):
 
 
 class LetterInstruction(BaseModel):       # Ko'rstma hati
+   report_name=models.CharField(max_length=100)      # hisobat nomi
    letter_name=models.CharField(max_length=50)
+   company_name=models.CharField(max_length=150)
+
    user=models.ForeignKey(MyUser,on_delete=models.SET_NULL,null=True) 
-   litter_number=models.CharField(unique=True,max_length=15)
+   
+   
    adress=models.CharField(max_length=100)
    street=models.CharField(max_length=100)
-   company_name=models.CharField(max_length=150)
+   
+   litter_number=models.CharField(max_length=15)
+   inn_number=models.CharField(max_length=15)
    stir_number=models.PositiveBigIntegerField(default=0)
    phone_number=models.CharField(max_length=13)
-   report_name=models.CharField(max_length=100)      # hisobat nomi
-   report_date=models.DateTimeField()
+   
+   report_date=models.DateTimeField(auto_now=True)
    created_date_add=models.DateTimeField(default=timezone.now()+timedelta(days=30)) 
 
    def __repr__(self) -> str:

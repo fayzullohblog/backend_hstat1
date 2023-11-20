@@ -164,8 +164,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 if not DEBUG:
     STATIC_ROOT = '/home/hsatuz12/reportx.hsat.uz/full_hsat/static/'
-
+import os
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+# settings.py
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 
 AUTH_USER_MODEL='accountapp.MyUser' 
 
