@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 import pandas as pd
+from rest_framework.permissions import IsAdminUser
 
 from .models import LetterInstruction
 from .serializer import LetterInstructionSerializer,ExcelUploadSerializer
@@ -10,6 +11,7 @@ from rest_framework import generics, status
 class ExcelUploadAPIView(generics.CreateAPIView):
     serializer_class = ExcelUploadSerializer
     queryset=LetterInstruction.objects.all()
+    permission_classes=[IsAdminUser]
      
     def create(self, request, *args, **kwargs):    
 
