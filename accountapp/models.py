@@ -17,6 +17,6 @@ class MyUser(AbstractUser):
     REQUIRED_FIELDS = ["phone_number"]
 
     def __str__(self) -> str:
-        return self.first_name
+        return self.username
 
 
