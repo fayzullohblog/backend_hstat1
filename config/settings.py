@@ -90,7 +90,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "https://reportx.hsat.uz",  # Loyhamning manzili manzili
-    "http://localhost:5133",   # Localhost manzili 
+    "http://localhost:5173",
+    "http://localhost:5174",   # Localhost manzili 
 ]
 
 CORS_ALLOW_METHODS = [
