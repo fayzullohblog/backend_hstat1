@@ -43,7 +43,9 @@ class LetterInstruction(BaseModel):       # Ko'rstma hati
    state=models.BooleanField(default=False,choices=[(True,'Topshirdi'),(False,'Topshirmadi')])
 
    def __repr__(self) -> str:
-          return self.letter_name
+          return self.letter_name 
+        
+    #FIXME: keyingisafar bundan foydalanmayman
 
 
 class LetterSummons(BaseModel):# Chaqiruv hati
