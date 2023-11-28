@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
+from django.core.exceptions  import ValidationError
+from django.core.validators import EmailValidator
 # Create your models here.
 MyUser=get_user_model()
 
@@ -15,6 +17,25 @@ class BaseModel(models.Model):
     def save(self,*args,**kwargs):
         self.update_date=timezone.now()
         super().save(*args,**kwargs)
+
+
+class Zarik(BaseModel):
+    
+    company_name=models.CharField(max_length=150)
+
+    adress=models.CharField(max_length=100)
+    street=models.CharField(max_length=100)
+
+    phone_number=models.CharField(max_length=13)
+    inn_number=models.CharField(max_length=15)
+
+    email=models.EmailField(validators=[EmailValidator()])
+    soato=models.CharField(max_length=9)
+
+    def clean(self):
+        if not (self.phone_number or self.email):
+            raise ValidationError("At least one of phone number or email is required.")
+
 
 
 

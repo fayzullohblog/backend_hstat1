@@ -4,14 +4,39 @@ from rest_framework import status
 import pandas as pd
 from rest_framework.permissions import IsAdminUser
 
-from .models import LetterInstruction
-from .serializer import LetterInstructionSerializer,ExcelUploadSerializer
+from .models import LetterInstruction,Zarik
+from .serializer import LetterInstructionSerializer,ExcelUploadSerializer,ZarikSerializer,ZarikUploadSerializer
 from rest_framework import generics, status
+
+
+class ZarikCreateApiView(generics.CreateAPIView):
+    serializer_class=ZarikUploadSerializer
+    queryset=Zarik.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        excel_file = request.data.get('zarik_file')
+        try:
+            df = pd.read_excel(excel_file)
+
+            row,_=df.shape
+            
+            records = df.to_dict(orient='records')
+            objetcs=[Zarik(**record) for record in records]
+            
+            Zarik.objects.bulk_create(objetcs)
+            queryset=self.get_queryset()[:row]
+            
+            serializer=ZarikSerializer(queryset,many=True)  
+            return Response({"Successful": f"{row} ta companya bazaga saqlandi"}, status=status.HTTP_201_CREATED)
+                
+        except Exception as e:
+            return Response({'error':f'Zarik bazani  saqlashda xatolik {e}'},status=status.HTTP_404_NOT_FOUND)
+
 
 class ExcelUploadAPIView(generics.CreateAPIView):
     serializer_class = ExcelUploadSerializer
     queryset=LetterInstruction.objects.all()
-    permission_classes=[IsAdminUser]
+    # permission_classes=[IsAdminUser]
      
     def create(self, request, *args, **kwargs):    
 

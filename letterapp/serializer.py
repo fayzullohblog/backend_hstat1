@@ -1,4 +1,4 @@
-from .models import LetterInstruction
+from .models import LetterInstruction,Zarik
 from rest_framework import serializers
 
 class LetterInstructionSerializer(serializers.ModelSerializer):
@@ -8,3 +8,16 @@ class LetterInstructionSerializer(serializers.ModelSerializer):
 
 class ExcelUploadSerializer(serializers.Serializer):
     excel_file = serializers.FileField()
+
+
+
+class ZarikUploadSerializer(serializers.Serializer):
+    zarik_file = serializers.FileField()
+
+
+
+class ZarikSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Zarik
+        fields='__all__'
+
