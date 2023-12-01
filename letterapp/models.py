@@ -26,11 +26,12 @@ class Zarik(BaseModel):
     adress=models.CharField(max_length=100)
     street=models.CharField(max_length=100)
 
+
     phone_number=models.CharField(max_length=13)
-    inn_number=models.CharField(max_length=15)
+    inn_number=models.CharField(max_length=50)
 
     email=models.EmailField(validators=[EmailValidator()])
-    soato=models.CharField(max_length=9)
+    soato=models.CharField(max_length=50)
 
     def clean(self):
         if not (self.phone_number or self.email):
