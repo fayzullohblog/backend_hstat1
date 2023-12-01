@@ -48,13 +48,30 @@ class ExcelUploadAPIView(generics.CreateAPIView):
         try:
             # Excel faylni o'qish
             df = pd.read_excel(excel_file)
-            inn_numbers = df['inn_number'].tolist()
+            inn_number = df['inn_number'].tolist()
 
             # LetterInstruction obyektlarini inn_numbers bo'yicha filtrlash
-            filtered_letters = LetterInstruction.objects.filter(inn_number__in=inn_numbers)
 
+            filtered_zarik = Zarik.objects.filter(inn_number__in=inn_number).all()
+        
+
+            objects=[LetterInstruction(
+                                    company_name=record.company_name,
+                                    inn_number=record.inn_number,
+                                    adress=record.adress,
+                                    street=record.street,
+                                    phone_number=record.phone_number,
+                                    soato=record.soato,
+                                    )
+                        for record in filtered_zarik 
+                     ]
+            
+            LetterInstruction.objects.bulk_create(objects)
+            
             # Filtrlangan ma'lumotlarni serializatsiya qilish
-            serializer = LetterInstructionSerializer(filtered_letters, many=True)
+
+            filtered_letter=LetterInstruction.objects.filter(inn_number__in=inn_number).all()
+            serializer = LetterInstructionSerializer(filtered_letter, many=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 

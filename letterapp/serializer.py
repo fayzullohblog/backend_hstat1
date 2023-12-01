@@ -11,10 +11,10 @@ class ExcelUploadSerializer(serializers.Serializer):
 
 
 
+
+
 class ZarikUploadSerializer(serializers.Serializer):
     zarik_file = serializers.FileField()
-
-
 
 class ZarikSerializer(serializers.ModelSerializer):
     class Meta:

@@ -58,6 +58,7 @@ class LetterInstruction(BaseModel):       # Ko'rstma hati
    inn_number=models.CharField(max_length=15)
    stir_number=models.PositiveBigIntegerField(default=0)
    phone_number=models.CharField(max_length=13)
+   soato=models.CharField(max_length=50)
    
    report_date=models.DateTimeField(auto_now=True)
    created_date_add=models.DateTimeField(default=timezone.now()+timedelta(days=30)) 
