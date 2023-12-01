@@ -21,13 +21,13 @@ class BaseModel(models.Model):
 
 class Zarik(BaseModel):
     
-    company_name=models.CharField(max_length=150)
+    company_name=models.CharField(max_length=300)
 
-    adress=models.CharField(max_length=100)
-    street=models.CharField(max_length=100)
+    adress=models.CharField(max_length=300)
+    street=models.CharField(max_length=300)
 
 
-    phone_number=models.CharField(max_length=13)
+    phone_number=models.CharField(max_length=50)
     inn_number=models.CharField(max_length=50)
 
     email=models.EmailField(validators=[EmailValidator()])
