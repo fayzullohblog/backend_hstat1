@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .userchoice import MyUserChoice
-
+from .manager import UserManager
 # Create your models here.
 
 class MyUser(AbstractUser):
@@ -10,7 +10,9 @@ class MyUser(AbstractUser):
     user_number_litter=models.CharField(max_length=40,unique=True,blank=True,null=True)
     role_user=models.CharField(max_length=5,default=MyUserChoice.STAFF,choices=MyUserChoice.choices)
     state=models.BooleanField(default=False)
-   
+
+                                                                                                                                                                                   
+    objects=UserManager()
 
     EMAIL_FIELD = "phone_number"
     USERNAME_FIELD = "username"

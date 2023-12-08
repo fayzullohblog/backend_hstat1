@@ -80,8 +80,12 @@ REST_FRAMEWORK={
 
     'DEFAULT_PERMISSION_CLASSESS':[
         'rest_framework.permissions.djangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
 }
+
 
 
 MIDDLEWARE = [
@@ -101,6 +105,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://reportx.hsat.uz",  # Loyhamning manzili manzili
     "http://localhost:5173",
     "http://localhost:5174",   # Localhost manzili 
+    'https://statistics-front.vercel.app',
 ]
 
 CORS_ALLOW_METHODS = [
