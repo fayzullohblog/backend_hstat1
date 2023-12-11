@@ -44,9 +44,8 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
     def __str__(self) -> str:
         return self.phone_number
 
-    @property
-    def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
-        return self.is_superuser
+
+    #     "Is the user a member of staff?"
+    #     # Simplest possible answer: All admins are staff
+    #     return self.is_superuser
 
