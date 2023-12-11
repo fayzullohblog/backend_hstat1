@@ -8,7 +8,6 @@ class MyTokenObtainPairSerializer(serializers.TokenObtainPairSerializer):
     
     @classmethod
     def get_token(cls, user) -> Token:
-        print('----',user.username)
         token=super().get_token(user)
         token['username']=user.username
         token['state']=user.state
@@ -24,11 +23,11 @@ class MyUserSerializer(ModelSerializer):
         fields='__all__'
 
     def create(self, validated_data):
+        d=validated_data['password']
         user = MyUser.objects.create_user(
-            validated_data['phone_number'],
+            validated_data['username'],
             password = validated_data['password'],
             first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            last_name=validated_data['last_name'],
             )
         return user
-
