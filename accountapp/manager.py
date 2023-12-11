@@ -31,7 +31,6 @@ class UserManager(BaseUserManager):
         )
 
         user.is_superuser=True
-        print('assasas')
         user.is_admin=True
         user.is_active=True
         user.save(using=self._db)
