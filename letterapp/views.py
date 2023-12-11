@@ -80,4 +80,5 @@ class ExcelUploadAPIView(generics.CreateAPIView):
             return Response({"error": f"Excel faylni qayta ishlashda xato: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
 
- 
+def tiny(request):
+    return render(request=request,template_name='tiny.html')
