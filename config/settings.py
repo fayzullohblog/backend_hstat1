@@ -22,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
@@ -62,11 +63,13 @@ OUT_APPS=[
     'corsheaders',
 
     'decouple',
+    'tinymce',
 ]
 
 MY_APP=[
     'accountapp.apps.AccountappConfig',
     'letterapp.apps.LetterappConfig',
+    'letterinstructionapp.apps.LetterinstructionappConfig',
 ]
 
 
@@ -231,7 +234,7 @@ import os
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -272,6 +275,9 @@ SIMPLE_JWT = {
 
 DATA_UPLOAD_MAX_MEMORY_SIZE=5242880  ## % 5MB
 
+
+# TINYMCE_JS_URL = os.path.join(STATIC_URL, "path/to/tiny_mce/tiny_mce.js")
+
 TINYMCE_DEFAULT_CONFIG = {
     'custom_undo_redo_levels': 100,
     'selector': 'textarea',
@@ -287,8 +293,8 @@ TINYMCE_DEFAULT_CONFIG = {
     'codesample_languages': [
         {'text': 'Python', 'value': 'python'}, {'text': 'HTML/XML', 'value': 'markup'},],
     'image_class_list': [{'title': 'Fluid', 'value': 'img-fluid', 'style': {} }],
-    'width': 'auto',
-    "height": "600px",
+    'width': '700px',
+    "height": "700px",
     'image_caption': True,
     "images_upload_url": "upload_image",
 }

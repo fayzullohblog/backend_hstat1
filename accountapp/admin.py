@@ -47,7 +47,7 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ["wide"],
-                "fields": ["username", "password1", "password2",'is_active'],
+                "fields": ["username", "password1", "password2",'is_active','image'],
             },
         ),
     ]

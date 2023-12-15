@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import LetterCourt,LetterInstruction,LetterReference,LetterSummons,Zarik
+from .models import LetterCourt,LetterInstruction,LetterReference,LetterSummons,Zarik,ReportCategory
 # Register your models here.
 
-admin.site.register([LetterCourt,LetterInstruction,LetterReference,LetterSummons,Zarik])
+admin.site.register([LetterCourt,LetterInstruction,LetterReference,LetterSummons,Zarik,ReportCategory])
 
 

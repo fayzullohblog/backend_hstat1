@@ -13,7 +13,7 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
     
     phone_number=models.CharField(max_length=30)
     user_number_litter=models.CharField(max_length=40,unique=True,blank=True,null=True)
-    
+    image=models.ImageField(upload_to='myuser/')
 
 
     is_admin = models.BooleanField(default=False)

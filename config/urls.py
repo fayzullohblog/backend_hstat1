@@ -34,6 +34,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/',include('accountapp.urls')),
     path('letter/',include('letterapp.urls')),
+    path('letterinstruction/',include('letterinstructionapp.urls')),
+
+    path('tinymce/', include('tinymce.urls')),
+
   path('docs/',schema_view.with_ui('swagger',cache_timeout=0),name='schema-swagger-ui'),
 ]
 

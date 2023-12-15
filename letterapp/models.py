@@ -39,13 +39,17 @@ class Zarik(BaseModel):
 
 
 
+class ReportCategory(BaseModel):
+    name=models.CharField(max_length=100)
 
-
+    def __str__(self):
+        return self.name
+    
 
 class LetterInstruction(BaseModel):       # Ko'rstma hati
    
-   report_name=models.CharField(max_length=100)      # hisobat nomi
-   letter_name=models.CharField(max_length=50)
+   report_category=models.ForeignKey(ReportCategory,on_delete=models.PROTECT,related_name='letterinstructuion')
+   letter_name=models.CharField(max_length=100)      # hisobat nomi
    company_name=models.CharField(max_length=150)
 
    user=models.ForeignKey(MyUser,on_delete=models.SET_NULL,null=True) 
