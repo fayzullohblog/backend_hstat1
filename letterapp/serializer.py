@@ -1,4 +1,6 @@
-from .models import LetterInstruction,Zarik
+from .models import LetterInstruction
+# from mainletter.models import Report
+from mainletter.models import Zarik
 from rest_framework import serializers
 
 class LetterInstructionSerializer(serializers.ModelSerializer):
@@ -12,6 +14,12 @@ class ExcelUploadSerializer(serializers.Serializer):
     name=serializers.CharField()
 
 
+# class CreateTemplateModelSerializer(serializers.ModelSerializer):
+#     excel_file = serializers.FileField()
+#     class Meta:
+#         models=Report
+#         fields=['name','typeletter']
+
 
 
 
@@ -23,3 +31,5 @@ class ZarikSerializer(serializers.ModelSerializer):
         model=Zarik
         fields='__all__'
 
+
+# -----------------------------------------------------

@@ -13,42 +13,27 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('accountapp', '0001_initial'),
-        ('mainletter', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='LetterReference',
+            name='LetterSummons',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_date', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
                 ('update_date', models.DateTimeField(default=django.utils.timezone.now)),
                 ('letter_name', models.CharField(max_length=50)),
                 ('company_name', models.CharField(max_length=150)),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='LetterInstruction',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('create_date', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
-                ('update_date', models.DateTimeField(default=django.utils.timezone.now)),
-                ('letter_name', models.CharField(max_length=100)),
-                ('company_name', models.CharField(max_length=150)),
+                ('report_name', models.CharField(max_length=100)),
                 ('adress', models.CharField(max_length=100)),
                 ('street', models.CharField(max_length=100)),
-                ('litter_number', models.CharField(max_length=15)),
+                ('litter_number', models.CharField(max_length=15, unique=True)),
                 ('inn_number', models.CharField(max_length=15)),
                 ('stir_number', models.PositiveBigIntegerField(default=0)),
                 ('phone_number', models.CharField(max_length=13)),
-                ('soato', models.CharField(max_length=50)),
-                ('report_date', models.DateTimeField(auto_now=True)),
-                ('created_date_add', models.DateTimeField(default=datetime.datetime(2024, 1, 20, 6, 32, 33, 690043, tzinfo=utc))),
+                ('report_date', models.DateTimeField()),
+                ('created_date_add', models.DateTimeField(default=datetime.datetime(2023, 12, 26, 6, 32, 33, 691195, tzinfo=utc))),
                 ('state', models.BooleanField(choices=[(True, 'Topshirdi'), (False, 'Topshirmadi')], default=False)),
-                ('createtemplate', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='letterinstructuion', to='mainletter.template')),
                 ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='accountapp.myuser')),
             ],
             options={

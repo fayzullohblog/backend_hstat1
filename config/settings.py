@@ -60,7 +60,7 @@ OUT_APPS=[
     'drf_yasg',
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
-    'corsheaders',
+    'corsheaders',   # xafsizlik ucghun, biz qaysi domenlardan request kelishini ta'mnlab beradi
 
     'decouple',
     'tinymce',
@@ -70,6 +70,9 @@ MY_APP=[
     'accountapp.apps.AccountappConfig',
     'letterapp.apps.LetterappConfig',
     'letterinstructionapp.apps.LetterinstructionappConfig',
+    'mainletter.apps.MainletterConfig',
+    'lettersummonapp.apps.LettersummonappConfig',
+    'lettercourtapp.apps.LettercourtappConfig',
 ]
 
 
@@ -78,7 +81,7 @@ INSTALLED_APPS=INSTALLED_APPS+OUT_APPS+MY_APP
 
 REST_FRAMEWORK={
     'DEFAULT_AUTHENTICATION_CLASSES':[
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
+            'rest_framework_simplejwt.authentication.JWTAuthentication',  # SestionAuthenticatio and TokenAuthenticationlarni ham ko'rish
     ],
 
     'DEFAULT_PERMISSION_CLASSESS':[
@@ -133,6 +136,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'django.template.context_processors.request',
             ],
         },
     },
@@ -234,7 +238,7 @@ import os
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=300),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,

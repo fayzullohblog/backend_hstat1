@@ -35,6 +35,7 @@ urlpatterns = [
     path('account/',include('accountapp.urls')),
     path('letter/',include('letterapp.urls')),
     path('letterinstruction/',include('letterinstructionapp.urls')),
+    path('mainletter/',include('mainletter.urls')),
 
     path('tinymce/', include('tinymce.urls')),
 
