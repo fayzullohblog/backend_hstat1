@@ -64,6 +64,7 @@ OUT_APPS=[
 
     'decouple',
     'tinymce',
+    'debug_toolbar',   # loyhani ishlash holatini ko'rish uchun
 ]
 
 MY_APP=[
@@ -104,6 +105,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',     # debug_toolbar uchun qushilgan
 ]
 
 
@@ -302,3 +304,10 @@ TINYMCE_DEFAULT_CONFIG = {
     'image_caption': True,
     "images_upload_url": "upload_image",
 }
+
+
+INTERNAL_IPS = [
+    # ...  DEBUG_TOOLBAR
+    "127.0.0.1",
+    # ...
+]
