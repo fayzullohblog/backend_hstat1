@@ -10,8 +10,7 @@ class LetterInstructionSerializer(serializers.ModelSerializer):
 
 class ExcelUploadSerializer(serializers.Serializer):
     excel_file = serializers.FileField()
-    template=serializers.CharField()
-    name=serializers.CharField()
+
 
 
 # class CreateTemplateModelSerializer(serializers.ModelSerializer):

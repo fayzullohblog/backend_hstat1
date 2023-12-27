@@ -43,7 +43,7 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
         return True
 
     def __str__(self) -> str:
-        return self.phone_number
+        return self.username
 
 
     #     "Is the user a member of staff?"

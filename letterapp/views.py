@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.http import HttpResponse
 from rest_framework import status
 import pandas as pd
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import AllowAny
 
 # from mainletter.models import Report
 from .models import LetterInstruction
@@ -21,7 +21,7 @@ from datetime import datetime
 class ZarikCreateApiView(generics.CreateAPIView):
     serializer_class=ZarikUploadSerializer
     queryset=Zarik.objects.all()
-    permission_classes=[IsAdminUser]
+    permission_classes=[AllowAny]
 
     def post(self, request, *args, **kwargs):
         excel_file = request.data.get('zarik_file')
@@ -46,34 +46,35 @@ class ZarikCreateApiView(generics.CreateAPIView):
 class LetterInstructionView(generics.CreateAPIView):
     serializer_class = ExcelUploadSerializer
     queryset=LetterInstruction.objects.all()
-    permission_classes=[IsAdminUser]
+    permission_classes=[AllowAny]
      
     def create(self, request, *args, **kwargs):
         serializer=self.get_serializer(data=request.data)
         if serializer.is_valid():   
-            name=serializer.validated_data['name']
-            excel_file=serializer.validated_data['excel_inn']
-            template=serializer.validated_data['template']
-       
-            # PDF fayllaga saqlash
 
+            excel_file=serializer.validated_data['excel_file']
+             
+            #PDF fayllaga saqlash
 
             if not excel_file:
                 return Response({"error": "Excel fayli talab qilinadi."}, status=status.HTTP_400_BAD_REQUEST)
-            
-            if not template:
-                return Response({"error": "Xat shabloni notug'ri."}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
                 # Excel faylni o'qish
                 df = pd.read_excel(excel_file)
                 inn_number = df['inn_number'].tolist()
                 # LetterInstruction obyektlarini inn_numbers bo'yicha filtrlash
-                report_category=Report.objects.get(name=name)
+
                 filtered_zarik = Zarik.objects.filter(inn_number__in=inn_number).all()
-                
+              
+                typeletter=request.session.get('typeletter')
+                template=request.session.get('template')
+
+                print('----0-0000',typeletter,'----',template)
                 objects=[LetterInstruction(
-                                        report_category=report_category,
+                                        typeletter=typeletter,
+                                        template__title=template,
+
                                         company_name=record.company_name,
                                         inn_number=record.inn_number,
                                         adress=record.adress,
@@ -83,6 +84,8 @@ class LetterInstructionView(generics.CreateAPIView):
                                         )
                             for record in filtered_zarik 
                         ]
+             
+                
                 
                 
                 LetterInstruction.objects.bulk_create(objects)
