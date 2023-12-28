@@ -48,7 +48,7 @@ class LetterInstructionView(generics.CreateAPIView):
     queryset=LetterInstruction.objects.all()
     permission_classes=[AllowAny]
      
-    def create(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer=self.get_serializer(data=request.data)
         if serializer.is_valid():   
 
@@ -67,24 +67,23 @@ class LetterInstructionView(generics.CreateAPIView):
 
                 filtered_zarik = Zarik.objects.filter(inn_number__in=inn_number).all()
               
-                typeletter=request.session.get('typeletter')
-                template=request.session.get('template')
+                template=request.session.get('template_pk1')
 
-                print('----0-0000',typeletter,'----',template)
+
                 objects=[LetterInstruction(
-                                        typeletter=typeletter,
-                                        template__title=template,
-
+                                   
+                                        template_id=template,
                                         company_name=record.company_name,
-                                        inn_number=record.inn_number,
                                         adress=record.adress,
                                         street=record.street,
+
+                                        inn_number=record.inn_number,
                                         phone_number=record.phone_number,
                                         soato=record.soato,
+                                        email=record.email
                                         )
                             for record in filtered_zarik 
                         ]
-             
                 
                 
                 

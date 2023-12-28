@@ -46,4 +46,4 @@ class Template(BaseModel):
     body=models.TextField()
 
     def __str__(self) -> str:
-        return f'{self.typeletter.name}: {self.title}'
+        return self.title
