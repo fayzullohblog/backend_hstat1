@@ -9,7 +9,7 @@ MyUser=get_user_model()
 
 
 
-class LetterInstruction(BaseModel):       # Ko'rstma hati
+class LetterInstruction(BaseModel):       # Ko'rstma hati1
    
    template=models.ForeignKey(Template,on_delete=models.PROTECT,related_name='letterinstructuion')
    

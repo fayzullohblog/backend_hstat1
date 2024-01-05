@@ -3,6 +3,7 @@
 
 
 # FOR FUTURE
+# excel fayl yuklangandan keyin, saytni yangilashda request.datani tozalab yuborish, excel fayl saqlanib yana ma'lumotlarni create qlib yubormasligi uchun
 # adminkaga kirish uchun capchadan foydalansih -
 # admin panelda user qo'shagan password xeshlanmayabdi+
 # staff va superuser uchunm pirmession berish, pirmession faylda yaratish pimessonlarni

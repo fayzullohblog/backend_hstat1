@@ -17,10 +17,11 @@ class LetterInstructionSerializer(serializers.ModelSerializer):
             'soato',
             'email',
             'report_date',
-            'created_date_add'
+            'created_date_add',
+            'state',
             ]
 
-class ExcelUploadSerializer(serializers.Serializer):
+class ExcelInnSerializer(serializers.Serializer):
     excel_file = serializers.FileField()
 
 

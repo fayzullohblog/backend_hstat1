@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 # from mainletter.models import Report
 from .models import LetterInstruction
 from mainletter.models import Zarik
-from .serializer import LetterInstructionSerializer,ExcelUploadSerializer,ZarikSerializer,ZarikUploadSerializer
+from .serializer import LetterInstructionSerializer,ExcelInnSerializer,ZarikSerializer,ZarikUploadSerializer
 from rest_framework import generics, status
 from reportlab.pdfgen import canvas
 import os
@@ -44,16 +44,18 @@ class ZarikCreateApiView(generics.CreateAPIView):
 
 
 class LetterInstructionView(generics.CreateAPIView):
-    serializer_class = ExcelUploadSerializer
+    serializer_class = ExcelInnSerializer
     queryset=LetterInstruction.objects.all()
     permission_classes=[AllowAny]
-     
+    
     def post(self, request, *args, **kwargs):
+       
+
         serializer=self.get_serializer(data=request.data)
         if serializer.is_valid():   
 
             excel_file=serializer.validated_data['excel_file']
-             
+          
             #PDF fayllaga saqlash
 
             if not excel_file:
@@ -64,7 +66,8 @@ class LetterInstructionView(generics.CreateAPIView):
                 df = pd.read_excel(excel_file)
                 inn_number = df['inn_number'].tolist()
                 # LetterInstruction obyektlarini inn_numbers bo'yicha filtrlash
-
+              
+                
                 filtered_zarik = Zarik.objects.filter(inn_number__in=inn_number).all()
               
                 template=request.session.get('template_pk1')
@@ -88,9 +91,12 @@ class LetterInstructionView(generics.CreateAPIView):
                 
                 
                 LetterInstruction.objects.bulk_create(objects)
-           
+                
+                inn_count=filtered_zarik.count()
+                
+            
+                filtered_letter=LetterInstruction.objects.filter(inn_number__in=inn_number).all().order_by('-create_date')[:inn_count]
 
-                filtered_letter=LetterInstruction.objects.filter(inn_number__in=inn_number).all()
                 serializer = LetterInstructionSerializer(filtered_letter, many=True)
 
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -99,7 +105,6 @@ class LetterInstructionView(generics.CreateAPIView):
                 return Response({"error": f"Excel faylni qayta ishlashda xato: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'error':'Is validda xato'})
-
 
 def tiny(request):
     return render(request=request,template_name='tiny.html')
