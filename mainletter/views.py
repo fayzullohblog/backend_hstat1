@@ -130,6 +130,7 @@ class TemplateRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         template_instance = get_object_or_404(self.queryset, typeletter__name=typeletter, id=template_pk1)
 
         request.session['template_pk1']=template_instance.id
+        request.session['typeletter_pk']=typeletter.id
 
 
         body_data = request.data.get('body', None)

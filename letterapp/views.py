@@ -7,16 +7,14 @@ from rest_framework.permissions import AllowAny
 
 # from mainletter.models import Report
 from .models import LetterInstruction
-from mainletter.models import Zarik
+from mainletter.models import Zarik,Template
 from .serializer import LetterInstructionSerializer,ExcelInnSerializer,ZarikSerializer,ZarikUploadSerializer
 from rest_framework import generics, status
-from reportlab.pdfgen import canvas
-import os
 from django.template.loader import render_to_string
-from weasyprint import HTML
-from datetime import datetime
 
-
+import pdfkit
+from django.template.loader import get_template
+from .generate_pdf import generate_and_save_pdf
 
 class ZarikCreateApiView(generics.CreateAPIView):
     serializer_class=ZarikUploadSerializer
@@ -70,12 +68,14 @@ class LetterInstructionView(generics.CreateAPIView):
                 
                 filtered_zarik = Zarik.objects.filter(inn_number__in=inn_number).all()
               
-                template=request.session.get('template_pk1')
-
-
+                template_pk1=request.session.get('template_pk1')
+                typeletter_pk=request.session.get('typeletter_pk')
+               
+                domain_name=request.META['HTTP_HOST']
+                i=0
                 objects=[LetterInstruction(
-                                   
-                                        template_id=template,
+                                        
+                                        template_id=template_pk1,
                                         company_name=record.company_name,
                                         adress=record.adress,
                                         street=record.street,
@@ -83,21 +83,29 @@ class LetterInstructionView(generics.CreateAPIView):
                                         inn_number=record.inn_number,
                                         phone_number=record.phone_number,
                                         soato=record.soato,
-                                        email=record.email
+                                        email=record.email,
+
+                                        pdf_file=generate_and_save_pdf(
+                                                template_pk1=template_pk1,
+                                                user=request.user,
+                                                typeletter_pk=typeletter_pk,
+                                                file_name=record.inn_number,
+                                              
+                                                )
                                         )
-                            for record in filtered_zarik 
+
+                                        for record in filtered_zarik
                         ]
                 
                 
-                
                 LetterInstruction.objects.bulk_create(objects)
-                
+
+
                 inn_count=filtered_zarik.count()
-                
             
                 filtered_letter=LetterInstruction.objects.filter(inn_number__in=inn_number).all().order_by('-create_date')[:inn_count]
-
                 serializer = LetterInstructionSerializer(filtered_letter, many=True)
+         
 
                 return Response(serializer.data, status=status.HTTP_200_OK)
 

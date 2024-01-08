@@ -7,7 +7,8 @@ from mainletter.models import Template,TypeLetter
 # Create your models here.
 MyUser=get_user_model()
 
-
+class PdfFilePath(models.TextChoices):
+    pdf_instraction_path='pdfletterinstruction/unsigned/'
 
 class LetterInstruction(BaseModel):       # Ko'rstma hati1
    
@@ -29,9 +30,16 @@ class LetterInstruction(BaseModel):       # Ko'rstma hati1
 
    state=models.BooleanField(default=False,choices=[(True,'Topshirdi'),(False,'Topshirmadi')])
 
+   pdf_file=models.FileField(upload_to=PdfFilePath.pdf_instraction_path)
+
 
         
     #FIXME: keyingisafar bundan foydalanmayman
+
+
+# class PdfLetterInstruction(BaseModel):
+#     pdf_file=models.FileField(upload_to="pdfletterinstruction/unsigned/")
+#     letterinstruction=models.ForeignKey(LetterInstruction,on_delete=models.PROTECT)
 
 
 class LetterReference(BaseModel):

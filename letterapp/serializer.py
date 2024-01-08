@@ -8,13 +8,16 @@ class LetterInstructionSerializer(serializers.ModelSerializer):
         model = LetterInstruction
         fields = [
             'template',
+
             'company_name',
             'adress',
             'street',
+
             'inn_number',
             'litter_number',
             'phone_number',
             'soato',
+
             'email',
             'report_date',
             'created_date_add',

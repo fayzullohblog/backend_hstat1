@@ -65,6 +65,7 @@ OUT_APPS=[
     'decouple',
     'tinymce',
     'debug_toolbar',   # loyhani ishlash holatini ko'rish uchun
+    # 'wkhtmltopdf',  #pDFKIT uchun
 ]
 
 MY_APP=[
@@ -311,3 +312,15 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+
+
+
+
+# WKHTMLTOPDF
+
+WKHTMLTOPDF_CMD = '/path/to/my/wkhtmltopdf'
+
+WKHTMLTOPDF_CMD_OPTIONS = {
+    'quiet': True,
+}

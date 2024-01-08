@@ -5,6 +5,7 @@ certifi==2023.7.22
 cffi==1.16.0
 chardet==5.2.0
 charset-normalizer==3.3.2
+clr-loader==0.2.6
 coreapi==2.3.3
 coreschema==0.0.4
 cssselect2==0.7.0
@@ -16,6 +17,7 @@ django-jazzmin==2.6.0
 django-pandas==0.6.6
 django-rest-swagger==2.2.0
 django-tinymce==3.6.1
+django-wkhtmltopdf==3.4.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.0
 drf-yasg==1.21.7
@@ -24,6 +26,7 @@ fonttools==4.46.0
 html5lib==1.1
 idna==3.4
 inflection==0.5.1
+IronPdf==2023.8.6
 isort==5.13.2
 itypes==1.2.0
 jdcal==1.4.1
@@ -45,6 +48,7 @@ pylint==3.0.3
 pyphen==0.14.0
 python-dateutil==2.8.2
 python-decouple==3.8
+pythonnet==3.0.3
 pytz==2023.3.post1
 PyYAML==6.0.1
 reportlab==4.0.8
