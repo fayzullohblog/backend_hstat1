@@ -134,7 +134,6 @@ class TemplateRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
 
 
         body_data = request.data.get('body', None)
-        print('--------4',body_data)
 
         if body_data is not None:
             template_instance.body = body_data

@@ -7,8 +7,16 @@ from mainletter.models import Template,TypeLetter
 # Create your models here.
 MyUser=get_user_model()
 
+
+# Upload pdf file for LetterInstruction
 class PdfFilePath(models.TextChoices):
     pdf_instraction_path='pdfletterinstruction/unsigned/'
+
+# Manager Count Class for Pdf file fields
+class LetterInstructionManager(models.Manager):
+    def pdf_file_count(self):
+        return self.values('pdf_file').count()
+
 
 class LetterInstruction(BaseModel):       # Ko'rstma hati1
    
@@ -33,13 +41,11 @@ class LetterInstruction(BaseModel):       # Ko'rstma hati1
    pdf_file=models.FileField(upload_to=PdfFilePath.pdf_instraction_path)
 
 
-        
-    #FIXME: keyingisafar bundan foydalanmayman
+   objects=LetterInstructionManager()  
+   
+         
+   #FIXME: keyingisafar bundan foydalanmayman
 
-
-# class PdfLetterInstruction(BaseModel):
-#     pdf_file=models.FileField(upload_to="pdfletterinstruction/unsigned/")
-#     letterinstruction=models.ForeignKey(LetterInstruction,on_delete=models.PROTECT)
 
 
 class LetterReference(BaseModel):

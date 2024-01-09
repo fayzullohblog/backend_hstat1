@@ -1,5 +1,4 @@
-from config.settings import MEDIA_ROOT
-print(MEDIA_ROOT)
-                                             
-
+name='fayzulloh'
+a='assalomu {name}'.format(name=name)
+print(a)
  

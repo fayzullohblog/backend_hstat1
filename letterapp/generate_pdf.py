@@ -11,17 +11,15 @@ pdf_file_path=PdfFilePath.pdf_instraction_path
 media_root=settings.MEDIA_ROOT
 
 
-
-
-
-def generate_and_save_pdf(template_pk1,typeletter_pk,user,file_name):
+def generate_pdf(template_pk1,typeletter_pk,user,file_name):
 
     template=Template.objects.get(
         user=user,
         id=template_pk1,
         typeletter_id=typeletter_pk,
         )
-    template_html=template.body
+
+    template_html=template.body.format(user=template.user)
 
     # file path for save 
     full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}'
