@@ -148,24 +148,33 @@ class TemplateCreateView(generics.CreateAPIView):
     queryset=Template.objects.all()
     serializer_class=TemplateCreateSerializer
     permission_classes=[AllowAny]
-
+   
     def create(self, request, *args, **kwargs):
-
+        
         user=self.request.user
         typeletter_id=self.request.data.get('typeletter')
+
         title=self.request.data.get('title')
         body=self.request.data.get('body')
-
+        report_date=self.request.data.get('report_date')
+        
         try:
+
             typeletter_instance=TypeLetter.objects.get(id=typeletter_id)
+            
         except TypeLetter.DoesNotExist:
+
             return Response({'error':'Invalid typeletter ID '}, status=400)
+        
+        if report_date:
+            pass
 
         query=Template.objects.create(
             typeletter=typeletter_instance,
             user=user,
             title=title,
             body=body,
+            report_date=report_date,
         )
         serializer=self.serializer_class(query)
      

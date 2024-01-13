@@ -11,7 +11,6 @@ class LetterTemplatesCreateApiView(generics.CreateAPIView):
     serializer_class=LetterTemplatesserializer
 
     def create(self, request, *args, **kwargs):
-        print('------------1',type(request.data.get('templates')))
         return super().create(request, *args, **kwargs)
 
 

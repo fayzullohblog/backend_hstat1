@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import LetterInstruction,LetterReference
+from .models import PdfFileTemplate
 # Register your models here.
 
-admin.site.register([LetterInstruction,LetterReference])
+admin.site.register([PdfFileTemplate])
 
 

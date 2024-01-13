@@ -20,13 +20,13 @@ class FullTemplateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model=Template
-        fields=['id','title','body']
-        read_only_fields=('title',)
+        fields=['id','title','body','report_date','create_date']
+        read_only_fields=('title','report_date','create_date')
 
 
 class TemplateCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model=Template
-        fields=['typeletter','title','body']
+        fields=['typeletter','title','body','report_date']
 
     

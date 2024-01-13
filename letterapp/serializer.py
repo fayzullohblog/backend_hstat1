@@ -1,4 +1,4 @@
-from .models import LetterInstruction
+from .models import LetterInstruction,PdfFileTemplate
 # from mainletter.models import Report
 from mainletter.models import Zarik
 from rest_framework import serializers
@@ -42,3 +42,12 @@ class ZarikSerializer(serializers.ModelSerializer):
 
 
 # -----------------------------------------------------
+class PdfFileTemplateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =  PdfFileTemplate
+        fields = [
+            'template',
+            'state',
+            'inn_number',
+            'soato',
+        ]

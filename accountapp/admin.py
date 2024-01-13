@@ -37,7 +37,7 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = [
         (None, {"fields": ["password",'username',]}),
-        ("Personal info", {"fields": ["first_name",'last_name','phone_number']}),
+        ("Personal info", {"fields": ["first_name",'last_name','phone_number','user_number_litter']}),
         ("Permissions", {"fields": ["is_admin",'is_active','is_superuser','is_staff','is_boss']}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -65,7 +65,7 @@ class UserAdmin(BaseUserAdmin):
     def _allow_edit(self, obj=None):
         if not obj:
             return True
-        return not (obj.is_staff or obj.is_superuser)
+        return  (obj.is_staff or obj.is_superuser)
 
     def has_change_permission(self, request, obj=None):
         return self._allow_edit(obj)

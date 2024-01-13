@@ -2,10 +2,12 @@ from django.db import models
 from utils.models import BaseModel
 from django.core.exceptions  import ValidationError
 from django.core.validators import EmailValidator
-from django.contrib.auth import get_user_model
-# Create your models here.
+from accountapp.models import MyUser
+# from django.contrib.auth import get_user_model
 
-User=get_user_model()
+
+
+# User=get_user_model()
 
 
 class Zarik(BaseModel):
@@ -40,10 +42,16 @@ class TypeLetter(BaseModel):
 
 class Template(BaseModel):
     typeletter=models.ForeignKey(TypeLetter,on_delete=models.CASCADE,related_name='template')
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    user=models.ForeignKey(MyUser,on_delete=models.CASCADE)
+    title=models.CharField(max_length=150,blank=False,null=False)
+    body=models.TextField(blank=False,null=False)
 
-    title=models.CharField(max_length=150)
-    body=models.TextField()
+    report_date=models.DateField(auto_now_add=False)
+
+
 
     def __str__(self) -> str:
         return self.title
+    
+
+

@@ -6,9 +6,18 @@ import pandas as pd
 from rest_framework.permissions import AllowAny
 
 # from mainletter.models import Report
-from .models import LetterInstruction
+from .models import (
+                        LetterInstruction,
+                        PdfFileTemplate,
+                    )
 from mainletter.models import Zarik,Template
-from .serializer import LetterInstructionSerializer,ExcelInnSerializer,ZarikSerializer,ZarikUploadSerializer
+from .serializer import (
+                        LetterInstructionSerializer,
+                        ExcelInnSerializer,
+                        ZarikSerializer,
+                        ZarikUploadSerializer,
+                        PdfFileTemplateSerializer,
+                        )
 from rest_framework import generics, status
 from django.template.loader import render_to_string
 
@@ -40,7 +49,7 @@ class ZarikCreateApiView(generics.CreateAPIView):
         except Exception as e:
             return Response({'error':f'Zarik bazani  saqlashda xatolik {e}'},status=status.HTTP_404_NOT_FOUND)
 
-
+# bedkor ilinadi, O'rniga PdffileTemplateView qilindi
 class LetterInstructionView(generics.CreateAPIView):
     serializer_class = ExcelInnSerializer
     queryset=LetterInstruction.objects.all()
@@ -75,9 +84,9 @@ class LetterInstructionView(generics.CreateAPIView):
            
                                 
                 objects = []
-     
                 file_name=LetterInstruction.objects.pdf_file_count()
                 
+    
                 for record in filtered_zarik:
                     file_name+=1
                     obj = LetterInstruction(
@@ -89,12 +98,20 @@ class LetterInstructionView(generics.CreateAPIView):
                         phone_number=record.phone_number,
                         soato=record.soato,
                         email=record.email,
-                        pdf_file=generate_pdf(
-                            template_pk1=template_pk1,
-                            user=request.user,
-                            typeletter_pk=typeletter_pk,
-                            file_name=file_name,
-                        )
+                        # pdf_file=generate_pdf(
+                        #     template_pk1=template_pk1,
+                        #     typeletter_pk=typeletter_pk,
+                        #     user=request.user,
+                        #     file_name=file_name,
+                        #     adress=record.adress,
+                        #     street=record.street,
+                        #     company_name=record.company_name,
+                        #     inn_number=record.inn_number,
+                        #     phone_number=record.phone_number,                          
+                        #     update_date=record.update_date,
+    
+                            
+                        #     )
                     )
                     objects.append(obj)
                 
@@ -114,5 +131,94 @@ class LetterInstructionView(generics.CreateAPIView):
         else:
             return Response({'error':'Is validda xato'})
 
+
+
 def tiny(request):
     return render(request=request,template_name='tiny.html')
+
+
+class PdfFileTemplateView(generics.CreateAPIView):
+    serializer_class = ExcelInnSerializer
+    queryset=PdfFileTemplate.objects.all()
+    permission_classes=[AllowAny]
+    
+    def post(self, request, *args, **kwargs):
+       
+
+        serializer=self.get_serializer(data=request.data)
+        if serializer.is_valid():  
+
+            excel_file=serializer.validated_data['excel_file']
+            print('---------2',excel_file)
+          
+            #PDF fayllaga saqlash
+
+            if not excel_file:
+                return Response({"error": "Excel fayli talab qilinadi."}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                # Excel faylni o'qish
+                df = pd.read_excel(excel_file)
+                inn_number = df['inn_number'].tolist()
+                # LetterInstruction obyektlarini inn_numbers bo'yicha filtrlash
+              
+                filtered_zarik = Zarik.objects.filter(inn_number__in=inn_number).all()
+                if not filtered_zarik.exists():
+                    return Response(data={'message':'Zarik baza yaratilmagan'})
+              
+                template_pk1=request.session.get('template_pk1')
+                typeletter_pk=request.session.get('typeletter_pk')
+               
+                domain_name=request.META['HTTP_HOST']
+                
+           
+                                
+                objects = []
+                file_name=PdfFileTemplate.objects.pdf_file_count()
+                
+    
+                for record in filtered_zarik:
+                    file_name+=1
+                    obj = PdfFileTemplate(
+                        template_id=template_pk1,
+                        # company_name=record.company_name,
+                        # adress=record.adress,
+                        # street=record.street,
+                        inn_number=record.inn_number,
+                        soato=record.soato,
+                        # email=record.email,
+                        pdf_file=generate_pdf(
+                            template_pk1=template_pk1,
+                            typeletter_pk=typeletter_pk,
+                            request=request,
+                            file_name=file_name,
+
+                            adress=record.adress,
+                            street=record.street,
+                            company_name=record.company_name,
+                            inn_number=record.inn_number,
+                            phone_number=record.phone_number, 
+                                                     
+                          
+    
+                            
+                            )
+                    )
+                    objects.append(obj)
+                
+                PdfFileTemplate.objects.bulk_create(objects)
+
+
+                inn_count=filtered_zarik.count()
+            
+                filtered_letter=PdfFileTemplate.objects.filter(inn_number__in=inn_number).all().order_by('-create_date')[:inn_count]
+                serializer = PdfFileTemplateSerializer(filtered_letter, many=True)
+         
+
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+            except Exception as e:
+                return Response({"error": f"Excel faylni qayta ishlashda xato: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'error':'Is validda xato'})
+

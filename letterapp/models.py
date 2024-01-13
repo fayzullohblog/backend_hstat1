@@ -13,7 +13,7 @@ class PdfFilePath(models.TextChoices):
     pdf_instraction_path='pdfletterinstruction/unsigned/'
 
 # Manager Count Class for Pdf file fields
-class LetterInstructionManager(models.Manager):
+class PdfFileLetterinstructionManager(models.Manager):
     def pdf_file_count(self):
         return self.values('pdf_file').count()
 
@@ -34,21 +34,31 @@ class LetterInstruction(BaseModel):       # Ko'rstma hati1
    email=models.EmailField(null=True,blank=True)
    
    report_date=models.DateTimeField(auto_now=True)
-   created_date_add=models.DateTimeField(default=timezone.now()+timedelta(days=30)) 
+   letter_date=models.DateTimeField(default=timezone.now().date()+timedelta(days=7)) 
 
    state=models.BooleanField(default=False,choices=[(True,'Topshirdi'),(False,'Topshirmadi')])
 
-   pdf_file=models.FileField(upload_to=PdfFilePath.pdf_instraction_path)
+#    pdf_file=models.FileField(upload_to=PdfFilePath.pdf_instraction_path)
 
 
-   objects=LetterInstructionManager()  
    
          
    #FIXME: keyingisafar bundan foydalanmayman
 
 
 
-class LetterReference(BaseModel):
-    letter_name=models.CharField(max_length=50)
-    company_name=models.CharField(max_length=150)
-    
+class PdfFileTemplate(BaseModel):
+   
+   template=models.ForeignKey(Template,on_delete=models.CASCADE,related_name='pdffiletemplate')
+   pdf_file=models.FileField(upload_to=PdfFilePath.pdf_instraction_path)
+   letter_date=models.DateTimeField(default=timezone.now()+timedelta(days=7))
+   inn_number=models.CharField(max_length=15) 
+   state=models.BooleanField(default=False,choices=[(True,'Topshirdi'),(False,'Topshirmadi')])
+   soato=models.CharField(max_length=50)
+
+   objects=PdfFileLetterinstructionManager()
+
+
+   def letter_date(self):
+       date=self.template.update_date
+       return date
