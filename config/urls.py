@@ -36,6 +36,7 @@ urlpatterns = [
     path('letter/',include('letterapp.urls')),
     path('letterinstruction/',include('letterinstructionapp.urls')),
     path('mainletter/',include('mainletter.urls')),
+    path('signedletter/',include('signedletter.urls')),
 
     path('tinymce/', include('tinymce.urls')),
     

@@ -75,6 +75,7 @@ MY_APP=[
     'mainletter.apps.MainletterConfig',
     'lettersummonapp.apps.LettersummonappConfig',
     'lettercourtapp.apps.LettercourtappConfig',
+    'signedletter.apps.SignedletterConfig',
 ]
 
 

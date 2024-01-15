@@ -1,7 +1,7 @@
 import pdfkit
 from django.core.files.base import ContentFile
 from .models import Template
-from letterapp.models import LetterInstruction,PdfFilePath
+from letterapp.models import PdfFilePath
 import os
 from django.conf import settings
 from django.utils import timezone
@@ -26,6 +26,15 @@ def generate_pdf(
     
         
         ):
+    
+    options = {
+        'page-size': 'A4',
+        'margin-top': '0mm',
+        'margin-right': '0mm',
+        'margin-bottom': '0mm',
+        'margin-left': '0mm',
+        'zoom': 0.1  # Bu qatorni qo'shlang
+    }
 
  
     template=Template.objects.get(
@@ -35,7 +44,7 @@ def generate_pdf(
 
         )
  
-    print('------------>',file_name)
+    
     template_html=template.body.format(
                             created_date=timezone.now().strftime('%Y-%m-%d'),
                             letter_date=template.report_date,
@@ -55,7 +64,7 @@ def generate_pdf(
     full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}'
     pdf_path=f'{full_letterinstruction_pdf_path}{file_name}.pdf'
 
-    pdfkit.from_string(template_html,pdf_path)
+    pdfkit.from_string(template_html,pdf_path,options=options)
 
     # file url for see 
     pdf_url=f'{pdf_file_path}{file_name}.pdf'

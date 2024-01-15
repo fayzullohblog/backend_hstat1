@@ -9,4 +9,3 @@ class Student:
         return one_student
     
 obj=Student(['oybek','azizbek','shahnoza'])
-print(obj.random_one_student())
