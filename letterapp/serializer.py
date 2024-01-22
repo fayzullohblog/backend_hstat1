@@ -44,6 +44,7 @@ class PdfFileTemplateSerializer(serializers.ModelSerializer):
             'state',
             'inn_number',
             'soato',
+            'pdf_file'
         ]
 
 class RecentlyCreatedPdfSerializer(serializers.ModelSerializer):

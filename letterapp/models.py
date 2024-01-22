@@ -27,6 +27,8 @@ class PdfFileTemplate(BaseModel):  # Ko'rstma hati1
    inn_number=models.CharField(max_length=15) 
    state=models.BooleanField(default=False,choices=[(True,'Topshirdi'),(False,'Topshirmadi')])
    soato=models.CharField(max_length=50)
+   signed_state=models.BooleanField(default=False)
+   
 
    objects=PdfFileLetterinstructionManager()
 

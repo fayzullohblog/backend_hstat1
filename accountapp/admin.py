@@ -37,7 +37,7 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = [
         (None, {"fields": ["password",'username',]}),
-        ("Personal info", {"fields": ["first_name",'last_name','phone_number','user_number_litter']}),
+        ("Personal info", {"fields": ["first_name",'last_name','phone_number','user_number_litter','party_name']}),
         ("Permissions", {"fields": ["is_admin",'is_active','is_superuser','is_staff','is_boss']}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -56,16 +56,12 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = []
     list_editable=['is_staff',"is_admin",'is_active','is_superuser','is_boss']
 
-    # def changed_fields(self, obj):
-    #     if obj.is_admin:
-    #         delta = obj.is_admin(obj.is_admin)
-    #         return delta.is_admin
-    #     return None
+
 
     def _allow_edit(self, obj=None):
         if not obj:
             return True
-        return  (obj.is_staff or obj.is_superuser)
+        return  (obj.is_staff or obj.is_superuser or obj.is_active)
 
     def has_change_permission(self, request, obj=None):
         return self._allow_edit(obj)

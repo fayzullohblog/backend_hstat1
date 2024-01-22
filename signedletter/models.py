@@ -9,4 +9,7 @@ class SignedPdf(BaseModel):
     pdf=models.FileField(upload_to='pdfletterinstruction/signed')
 
 
+class UnSignedPdfurl(BaseModel):
+    pdf_url=models.CharField(max_length=500)
+    
 

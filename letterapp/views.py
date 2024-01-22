@@ -98,6 +98,9 @@ class PdfFileTemplateView(generics.CreateAPIView):
              
                         inn_number=record.inn_number,
                         soato=record.soato,
+                        
+
+
                         pdf_file=generate_pdf(
                             template_pk1=template_pk1,
                             typeletter_pk=typeletter_pk,
@@ -109,10 +112,7 @@ class PdfFileTemplateView(generics.CreateAPIView):
                             company_name=record.company_name,
                             inn_number=record.inn_number,
                             phone_number=record.phone_number, 
-                                                     
-                          
-    
-                            
+                                                             
                             )
                     )
                     objects.append(obj)
