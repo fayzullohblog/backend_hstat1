@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import TypeLetter,Template
+from letterapp.models import PdfFileTemplate
 
 
 class TypeLetterSerializer(serializers.ModelSerializer):
@@ -30,3 +31,4 @@ class TemplateCreateSerializer(serializers.ModelSerializer):
         fields=['typeletter','title','body','report_date']
 
     
+

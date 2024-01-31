@@ -46,13 +46,14 @@ class TemplateRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     def get(self, request, *args, **kwargs):
         template_pk1 = self.kwargs.get('pk1')
         typeletter_pk = self.kwargs.get('pk')
+        user=request.user
         
 
         if template_pk1 is None or typeletter_pk is None:
             return Response({'status': 'don\'t gave name id'}, status=status.HTTP_400_BAD_REQUEST)
 
         typeletter = get_object_or_404(TypeLetter, id=typeletter_pk)
-        template_instance = get_object_or_404(self.queryset, typeletter__name=typeletter, id=template_pk1)
+        template_instance = get_object_or_404(self.queryset, typeletter__name=typeletter, id=template_pk1,user=user)
 
 
 

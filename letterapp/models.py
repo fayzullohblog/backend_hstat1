@@ -17,16 +17,25 @@ class PdfFileLetterinstructionManager(models.Manager):
     def pdf_file_count(self):
         return self.values('pdf_file').count()
 
+class NotificationManager(models.Manager):
+    def signed_state_count(self):
+        signed_state_count=self.filter(signed_state=False).count()
+        return signed_state_count
 
 
 class PdfFileTemplate(BaseModel):  # Ko'rstma hati1
    
-   template=models.ForeignKey(Template,on_delete=models.CASCADE,related_name='pdffiletemplate')
+   template=models.ForeignKey(Template,on_delete=models.CASCADE,related_name='pdffiletemplate_template')
+   user=models.ForeignKey(MyUser,on_delete=models.CASCADE,related_name='pdffiletemplate_user')
+
    pdf_file=models.FileField(upload_to=PdfFilePath.pdf_instraction_path)
-   letter_date=models.DateTimeField(default=timezone.now()+timedelta(days=7))
-   inn_number=models.CharField(max_length=15) 
-   state=models.BooleanField(default=False,choices=[(True,'Topshirdi'),(False,'Topshirmadi')])
+   
    soato=models.CharField(max_length=50)
+   inn_number=models.CharField(max_length=15) 
+   
+   letter_date=models.DateTimeField(default=timezone.now()+timedelta(days=7))
+   
+   state=models.BooleanField(default=False,choices=[(True,'Topshirdi'),(False,'Topshirmadi')])
    signed_state=models.BooleanField(default=False)
    
 
@@ -36,4 +45,9 @@ class PdfFileTemplate(BaseModel):  # Ko'rstma hati1
    def letter_date(self):
        date=self.template.update_date
        return date
+   
+
+
+
+   
    

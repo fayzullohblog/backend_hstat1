@@ -18,6 +18,7 @@ from .serializer import (
                         ZarikUploadSerializer,
                         PdfFileTemplateSerializer,
                         RecentlyCreatedPdfSerializer,
+                        UnSignedPdfNotificationSerializer,
                         )
 from rest_framework import generics, status
 from django.template.loader import render_to_string
@@ -58,7 +59,7 @@ class PdfFileTemplateView(generics.CreateAPIView):
     
     def post(self, request, *args, **kwargs):
        
-
+  
         serializer=self.get_serializer(data=request.data)
         if serializer.is_valid():  
 
@@ -82,6 +83,7 @@ class PdfFileTemplateView(generics.CreateAPIView):
               
                 template_pk1=request.session.get('template_pk1')
                 typeletter_pk=request.session.get('typeletter_pk')
+                user=self.request.user
                
                 domain_name=request.META['HTTP_HOST']
                 
@@ -98,6 +100,7 @@ class PdfFileTemplateView(generics.CreateAPIView):
              
                         inn_number=record.inn_number,
                         soato=record.soato,
+                        user=user,
                         
 
 
@@ -150,6 +153,24 @@ class RecentlyCreatedPdf(generics.ListAPIView):
         serializer = RecentlyCreatedPdfSerializer(queryset, many=True)
         return Response(serializer.data)
     
+# notificartion  
+class NotificationListApiView(generics.ListAPIView):
+
+    def list(self, request, *args, **kwargs):
+        queryset=PdfFileTemplate.objects.filter(signed_state=False).count()
+        return Response({'meesage':{'notificatioon':queryset}})
+    
+
+
+
+
+
+
+
+
+
+def index(request):
+    return render(request, 'index.html')
 
 def tiny(request):
     return render(request=request,template_name='tiny.html')
