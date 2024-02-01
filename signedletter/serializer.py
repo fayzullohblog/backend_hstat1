@@ -8,7 +8,7 @@ from letterapp.models import PdfFileTemplate
 class PartyUserSerializer(serializers.ModelSerializer):
     class Meta:
         model=MyUser
-        fields=['party_name']
+        fields=['party_name','username','id']
 
 
 class TypeLetterSerializer(serializers.ModelSerializer):
@@ -19,15 +19,17 @@ class TypeLetterSerializer(serializers.ModelSerializer):
 
 class TemplateSerializer(serializers.ModelSerializer): 
     typeletter=TypeLetterSerializer(read_only=True)
+    username=serializers.CharField(source='user.username',read_only=True)
     class Meta:
         model=Template
-        fields=['typeletter','id','title']
+        fields=['typeletter','id','title','username']
 
 
 class PdfFileTemplateUnSignedSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
-
     template=TemplateSerializer()
+    
+
     class Meta:
         model=PdfFileTemplate
         fields=[
@@ -37,20 +39,20 @@ class PdfFileTemplateUnSignedSerializer(serializers.ModelSerializer):
             'template',
             'signed_state',
         ]
-
-
-
-class PdfFileTemplateSignedSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', read_only=True)
-
-    template=TemplateSerializer()
-    class Meta:
-        model=PdfFileTemplate
-        fields=[
+        read_only_fields=(
+            'id',
+            'username',
             'pdf_file',
-            'user',
-      
-        ]
+            'template',
+            'signed_state',
+            'titler'
+        )
+
+
+
+class PdfFileTemplateSignedSerializer(serializers.Serializer):
+    ids=serializers.CharField()
+
 
     
     

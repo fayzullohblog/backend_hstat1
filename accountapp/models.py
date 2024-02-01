@@ -12,7 +12,7 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
     last_name=models.CharField(max_length=50,null=True,blank=True)
     party_name=models.CharField(max_length=100,unique=True)
     
-    phone_number=models.CharField(max_length=30)
+    phone_number=models.CharField(max_length=30,unique=True)
     user_number_litter=models.CharField(max_length=40,unique=True,blank=True,null=True)
     image=models.ImageField(upload_to='myuser/')
 
@@ -26,9 +26,9 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
                                                                                                                                                                                    
     objects=UserManager()
 
-    EMAIL_FIELD = "phone_number"
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["phone_number"]
+    EMAIL_FIELD = "username"
+    USERNAME_FIELD = "phone_number"
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self) -> str:
         return self.username

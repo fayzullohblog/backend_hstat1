@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+import datetime
+from django.core.exceptions  import ValidationError
 #  Create your views here.
 
 
@@ -98,7 +100,8 @@ class TemplateCreateView(generics.CreateAPIView):
 
         title=self.request.data.get('title')
         body=self.request.data.get('body')
-        report_date=self.request.data.get('report_date')
+        report_date=self.request.data.get('report_date',None)
+        print('--------->title',bool(title),title.isspace())
         
         try:
 
@@ -108,18 +111,23 @@ class TemplateCreateView(generics.CreateAPIView):
 
             return Response({'error':'Invalid typeletter ID '}, status=400)
         
-        if report_date:
-            pass
+        
+        if not bool(title) or title.isspace() or not bool(body) or body.isspace():
+            return Response({"message":'biror maydondi bush qoldirdingizmi?'})
 
-        query=Template.objects.create(
-            typeletter=typeletter_instance,
-            user=user,
-            title=title,
-            body=body,
-            report_date=report_date,
-        )
-        serializer=self.serializer_class(query)
-     
+        elif not bool(report_date):
+            return Response({"message":'Xisobat sanasini kiriting!!'})
+
+        else:
+            query=Template.objects.create(
+                typeletter=typeletter_instance,
+                user=user,
+                title=title,
+                body=body,
+                report_date=report_date,
+            )
+            serializer=self.serializer_class(query)
+        
 
         return Response(serializer.data)
 

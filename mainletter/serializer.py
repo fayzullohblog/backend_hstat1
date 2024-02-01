@@ -29,6 +29,3 @@ class TemplateCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model=Template
         fields=['typeletter','title','body','report_date']
-
-    
-
