@@ -50,7 +50,7 @@ class TemplateRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         typeletter_pk = self.kwargs.get('pk')
         user=request.user
         
-
+        
         if template_pk1 is None or typeletter_pk is None:
             return Response({'status': 'don\'t gave name id'}, status=status.HTTP_400_BAD_REQUEST)
 

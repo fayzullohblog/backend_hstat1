@@ -11,8 +11,8 @@ from letterapp.models import Template,TypeLetter
 from rest_framework import status
 from .serializer import (
                 PartyUserSerializer,
-                TemplateSerializer,
-                TypeLetterSerializer,
+                SignedTemplateSerializer,
+                SignedTypeLetterSerializer,
                 PdfFileTemplateUnSignedSerializer,
                 # PdfFileTemplateUnsignedSerializer,
                 PdfFileTemplateSignedSerializer,
@@ -36,7 +36,7 @@ class PartyUserListApiView(generics.ListAPIView):
 
 
 class TypeLetterListApiView(generics.ListAPIView):
-    serializer_class=TypeLetterSerializer
+    serializer_class=SignedTypeLetterSerializer
     queryset=TypeLetter.objects.all()
     permission_classes=[IsAuthenticated,OnlySuperUserOrStaff]
 
@@ -50,45 +50,23 @@ class TypeLetterListApiView(generics.ListAPIView):
 
 
 class TemplateListApiView(generics.ListAPIView):
-    serializer_class=TemplateSerializer
+    serializer_class=SignedTemplateSerializer
     queryset=Template.objects.all()
 
 
 
     def get(self, request, *args, **kwargs):
         typeletter_id=self.kwargs['pk']
-        staff_username=request.session['staff_username']
-
+        try:
+            staff_username=request.session['staff_username']
+        except:
+            return Response("Siz bo'limdi tanlamasdan, xatlar turini ko'ra olmaysiz, birinchi  bo'limni tanlang keyin xatlarni ko'ra olasiz")
+        
 
         queryset=self.queryset.filter(typeletter_id=typeletter_id,user__username=staff_username).all()
         serializer=self.serializer_class(instance=queryset,many=True)
         
         return Response(serializer.data)
-
-
-# class PdfFileTemplateUnsignedListApiView(generics.ListAPIView):
-#     serializer_class=PdfFileTemplateUnSignedSerializer
-#     queryset = PdfFileTemplate.objects.all()
-
-#     def get(self, request, *args, **kwargs):
-#         template_pk1 = self.kwargs.get('pk1')
-#         typeletter_pk = self.kwargs.get('pk')
-
-#         if template_pk1 is None or typeletter_pk is None:
-#             return Response({'status': 'don\'t gave name id'}, status=status.HTTP_400_BAD_REQUEST)
-
-        
-#         pdffiletemplate=self.queryset.filter(
-#             template_id=template_pk1,
-#             user=self.request.user,
-#             signed_state=False,
-#             template__typeletter_id=typeletter_pk)
-       
-
-
-
-#         serializer = self.serializer_class(pdffiletemplate,many=True)
-#         return Response(serializer.data)
 
 
 class PdfFileTemplateUnsignedListApiView(APIView):
@@ -105,44 +83,21 @@ class PdfFileTemplateUnsignedListApiView(APIView):
         
         if template_pk1 is None or typeletter_pk is None:
             return Response({'status': 'don\'t gave name id'}, status=status.HTTP_400_BAD_REQUEST)
-
+        
+        try:
+            staff_username=request.session['staff_username']
+        except:
+            return Response("Siz bo'limdi tanlamasdan, bo'limga tegishli xisobatlarni ko'ra olmaysiz, birinchi  bo'limni tanlang keyin xatlarni ko'ra olasiz")
+        
         
         pdffiletemplate=self.get_queryset().filter(
             template_id=template_pk1,
-            user__username=self.request.session['staff_username'],
+            user__username=staff_username,
             signed_state=False,
             template__typeletter_id=typeletter_pk)
 
         serializer = self.serializer_class(pdffiletemplate,many=True)
         return Response(serializer.data)
-
-    def put(self, request, *args, **kwargs):
-        template_pk1 = self.kwargs.get('pk1')
-        typeletter_pk = self.kwargs.get('pk')
-
-        if template_pk1 is None or typeletter_pk is None:
-            return Response({'status': 'don\'t gave name id'}, status=status.HTTP_400_BAD_REQUEST)
-
-        typeletter_pk = get_object_or_404(TypeLetter, id=typeletter_pk)
-        template_instance = self.get_queryset().filter(
-            template_id=template_pk1,
-            user=self.request.user,
-            signed_state=False,
-            template__typeletter_id=typeletter_pk    
-
-        )
-
-
-
-        serializer = self.serializer_class(template_instance, partial=True)
-        return Response(serializer.data)
-
-
-
-
-
-
-
 
 
 class PdfFileTemplateUnsignedDestroyApiView(generics.RetrieveDestroyAPIView):
@@ -150,10 +105,43 @@ class PdfFileTemplateUnsignedDestroyApiView(generics.RetrieveDestroyAPIView):
     queryset = PdfFileTemplate.objects.all()
 
 
-
-class PdfFileTemplateSignedUpdateApiView(generics.UpdateAPIView):
-    serializer_class=PdfFileTemplateSignedSerializer
-    queryset=PdfFileTemplate.objects.all()
-
+# class PdfFileTemplateSignedUpdateApiView(generics.UpdateAPIView):
+#     serializer_class=PdfFileTemplateSignedSerializer
+#     queryset=PdfFileTemplate.objects.all()
 
 
+
+class PdfFileTemplateSignedUpdateApiView(APIView):
+    
+    def put(self, request, *args, **kwargs):
+        data = request.data
+        pdf_file_updates = data.get('pdf_file_updates', [])  # List of dictionaries with 'id', 'pdf_file', and 'signed_state'
+        for update_data in pdf_file_updates:
+            pdf_file_id = update_data.get('id')
+            # pdf_file_path = update_data.get('pdf_file')
+            signed_state = update_data.get('signed_state')
+
+            try:
+                pdf_file_template = PdfFileTemplate.objects.get(id=pdf_file_id,signed_state=signed_state)
+                
+            except PdfFileTemplate.DoesNotExist:
+                return Response({'status': f'PdfFileTemplate with id {pdf_file_id} does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+            # Update the fields
+            # pdf_file_template.pdf_file = pdf_file_path
+            print('---------->',pdf_file_template.pdf_file)
+            pdf_file_template.signed_state = True
+            pdf_file_template.save()
+
+        return Response({'status': 'Successfully updated'}, status=status.HTTP_200_OK)
+    
+
+
+
+
+# {
+#     "pdf_file_updates": [
+#         {"id": 79, "signed_state": false},
+#         {"id": 80, "signed_state": false},
+# ]
+# }

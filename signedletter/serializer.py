@@ -11,14 +11,14 @@ class PartyUserSerializer(serializers.ModelSerializer):
         fields=['party_name','username','id']
 
 
-class TypeLetterSerializer(serializers.ModelSerializer):
+class SignedTypeLetterSerializer(serializers.ModelSerializer):
     class Meta:
         model=TypeLetter
         fields=['name','id']
 
 
-class TemplateSerializer(serializers.ModelSerializer): 
-    typeletter=TypeLetterSerializer(read_only=True)
+class SignedTemplateSerializer(serializers.ModelSerializer): 
+    typeletter=SignedTypeLetterSerializer(read_only=True)
     username=serializers.CharField(source='user.username',read_only=True)
     class Meta:
         model=Template
@@ -27,7 +27,7 @@ class TemplateSerializer(serializers.ModelSerializer):
 
 class PdfFileTemplateUnSignedSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
-    template=TemplateSerializer()
+    template=SignedTemplateSerializer()
     
 
     class Meta:
