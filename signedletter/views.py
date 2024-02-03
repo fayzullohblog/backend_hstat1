@@ -142,6 +142,6 @@ class PdfFileTemplateSignedUpdateApiView(APIView):
 # {
 #     "pdf_file_updates": [
 #         {"id": 79, "signed_state": false},
-#         {"id": 80, "signed_state": false},
-# ]
+#         {"id": 80, "signed_state": false}
+#     ]
 # }
