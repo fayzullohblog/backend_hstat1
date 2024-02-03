@@ -4,12 +4,12 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
-from .models import SignedPdf
+from ..models import SignedPdf
 from letterapp.models import PdfFileTemplate
 from accountapp.models import MyUser
 from letterapp.models import Template,TypeLetter
 from rest_framework import status
-from .serializer import (
+from ..serializer import (
                 PartyUserSerializer,
                 SignedTemplateSerializer,
                 SignedTypeLetterSerializer,
@@ -17,8 +17,10 @@ from .serializer import (
                 # PdfFileTemplateUnsignedSerializer,
                 PdfFileTemplateSignedSerializer,
                  )     
-from .persmissions import OnlySuperUserOrStaff
+from ..persmissions import OnlySuperUserOrStaff
 from rest_framework.permissions import IsAuthenticated
+
+from ..pdf_parser import PdfParser
 # Create your views here.
 
 
@@ -105,9 +107,6 @@ class PdfFileTemplateUnsignedDestroyApiView(generics.RetrieveDestroyAPIView):
     queryset = PdfFileTemplate.objects.all()
 
 
-# class PdfFileTemplateSignedUpdateApiView(generics.UpdateAPIView):
-#     serializer_class=PdfFileTemplateSignedSerializer
-#     queryset=PdfFileTemplate.objects.all()
 
 
 
@@ -127,21 +126,16 @@ class PdfFileTemplateSignedUpdateApiView(APIView):
             except PdfFileTemplate.DoesNotExist:
                 return Response({'status': f'PdfFileTemplate with id {pdf_file_id} does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
-            # Update the fields
-            # pdf_file_template.pdf_file = pdf_file_path
-            print('---------->',pdf_file_template.pdf_file)
-            pdf_file_template.signed_state = True
-            pdf_file_template.save()
+
+            pdf_file_path=pdf_file_template.pdf_file
+            
+            new_folder_name=str(pdf_file_path).split('/')
+            print('--------',new_folder_name)
+
+            #  shu yerga kelib qolgan edik
+
+
 
         return Response({'status': 'Successfully updated'}, status=status.HTTP_200_OK)
     
 
-
-
-
-# {
-#     "pdf_file_updates": [
-#         {"id": 79, "signed_state": false},
-#         {"id": 80, "signed_state": false}
-#     ]
-# }
