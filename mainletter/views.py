@@ -101,7 +101,6 @@ class TemplateCreateView(generics.CreateAPIView):
         title=self.request.data.get('title')
         body=self.request.data.get('body')
         report_date=self.request.data.get('report_date',None)
-        print('--------->title',bool(title),title.isspace())
         
         try:
 

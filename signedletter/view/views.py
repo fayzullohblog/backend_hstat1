@@ -21,6 +21,8 @@ from ..persmissions import OnlySuperUserOrStaff
 from rest_framework.permissions import IsAuthenticated
 
 from ..pdf_parser import PdfParser
+from config.settings import MEDIA_ROOT
+import os
 # Create your views here.
 
 
@@ -61,6 +63,7 @@ class TemplateListApiView(generics.ListAPIView):
         typeletter_id=self.kwargs['pk']
         try:
             staff_username=request.session['staff_username']
+            
         except:
             return Response("Siz bo'limdi tanlamasdan, xatlar turini ko'ra olmaysiz, birinchi  bo'limni tanlang keyin xatlarni ko'ra olasiz")
         
@@ -112,30 +115,61 @@ class PdfFileTemplateUnsignedDestroyApiView(generics.RetrieveDestroyAPIView):
 
 class PdfFileTemplateSignedUpdateApiView(APIView):
     
+
     def put(self, request, *args, **kwargs):
-        data = request.data
-        pdf_file_updates = data.get('pdf_file_updates', [])  # List of dictionaries with 'id', 'pdf_file', and 'signed_state'
-        for update_data in pdf_file_updates:
-            pdf_file_id = update_data.get('id')
-            # pdf_file_path = update_data.get('pdf_file')
-            signed_state = update_data.get('signed_state')
+        try:
+            data = request.data
+            pdf_file_updates = data.get('pdf_file_updates', [])  # List of dictionaries with 'id', 'pdf_file', and 'signed_state'
 
-            try:
-                pdf_file_template = PdfFileTemplate.objects.get(id=pdf_file_id,signed_state=signed_state)
+            domain_name=request.META['HTTP_HOST']
+            for update_data in pdf_file_updates:
+                pdf_file_id = update_data.get('id')
+                # pdf_file_path = update_data.get('pdf_file')
+                signed_state = update_data.get('signed_state')
+
+                try:
+                    pdf_file_instance = PdfFileTemplate.objects.get(id=pdf_file_id,signed_state=signed_state)
+                    
+                except PdfFileTemplate.DoesNotExist:
+                    return Response({'status': f'PdfFileTemplate with id {pdf_file_id} does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+
+                pdf_file_path=pdf_file_instance.pdf_file.path
+                new_folder_name=pdf_file_instance.user.username
                 
-            except PdfFileTemplate.DoesNotExist:
-                return Response({'status': f'PdfFileTemplate with id {pdf_file_id} does not exist'}, status=status.HTTP_404_NOT_FOUND)
+                new_folder = os.path.join(MEDIA_ROOT,new_folder_name)
+                if not  os.path.exists(new_folder):
+                    os.mkdir(new_folder)
+                
+                
+                pdf_file=PdfParser(pdf_file_path,domain_name)
+                # pdf_file_instance.signed_state=True
+                pdf_file.create_pdf(
+                                save_folder_path=new_folder,
+                                page=pdf_file_id,
+
+                                data_1=request.user.first_name, 
+                                x_path_1=420, y_path_1=130,
+
+                                data_2=request.user.username,
+                                x_path_2=80, y_path_2=130
+                                )
+                pdf_file_instance.save()
+
+                
 
 
-            pdf_file_path=pdf_file_template.pdf_file
-            
-            new_folder_name=str(pdf_file_path).split('/')
-            print('--------',new_folder_name)
+            return Response({'status': 'Successfully updated'}, status=status.HTTP_200_OK)
 
-            #  shu yerga kelib qolgan edik
+        except Exception as e:
+            return Response({'status': f'Error: {e}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+# {
+#     "pdf_file_updates": [
+#         {"id": 83, "signed_state": false},
+#         {"id": 84, "signed_state": false}
+#     ]
+# }
 
-        return Response({'status': 'Successfully updated'}, status=status.HTTP_200_OK)
-    
 

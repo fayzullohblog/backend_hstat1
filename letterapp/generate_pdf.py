@@ -6,7 +6,7 @@ import os
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
-
+from accountapp.models import MyUser
 # Define LetterInstructions' pdf file utl
 pdf_file_path=PdfFilePath.pdf_instraction_path
 media_root=settings.MEDIA_ROOT
@@ -36,13 +36,16 @@ def generate_pdf(
         'zoom': 0.1  # Bu qatorni qo'shlang
     }
 
- 
+    print('---------------------234','DDDDD')
+    user=MyUser.objects.get(username=request.user)
+    print('-----------45',user)
     template=Template.objects.get(
-        user=request.user,
+        user=user,
         id=template_pk1,
         typeletter_id=typeletter_pk,
 
         )
+    print('----------------34343434',template)
  
     
     template_html=template.body.format(

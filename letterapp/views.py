@@ -67,7 +67,7 @@ class PdfFileTemplateView(generics.CreateAPIView):
             
           
             #PDF fayllaga saqlash
-
+            
             if not excel_file:
                 return Response({"error": "Excel fayli talab qilinadi."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -82,7 +82,8 @@ class PdfFileTemplateView(generics.CreateAPIView):
                     return Response(data={'message':'Zarik baza yaratilmagan'})
               
                 template_pk1=request.session.get('template_pk1')
-                typeletter_pk=request.session.get('typeletter_pk')
+                typeletter_pk=request.session.get('typeletter_pk')   #TODO: sesionlar saq;anib qolayabdi
+                print('------------_____>',template_pk1,typeletter_pk)
                 user=self.request.user
                
                 domain_name=request.META['HTTP_HOST']

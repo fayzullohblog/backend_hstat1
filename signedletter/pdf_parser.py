@@ -2,11 +2,52 @@ import qrcode
 from reportlab.pdfgen.canvas import Canvas
 from config.settings import MEDIA_ROOT
 
-
+from PyPDF2 import PdfReader, PdfWriter
 from reportlab.pdfgen import canvas
 from reportlab.lib import styles
+import os
 
 class PdfParser:
+
+    def __init__(self, file, domain_name):
+        self.file = os.path.join(MEDIA_ROOT,file)
+        self.domain_name = domain_name
+        print('--------2',self.file)
+        self.reader = PdfReader(self.file)
+
+
+    def create_pdf(self, save_folder_path, page, **kwargs)->str:
+        """
+            Create pdf file with qrcode image
+        """
+        # Get the watermark file you just created
+
+        x=str(save_folder_path).split("\\")[-1]
+        SAVED_FILE_PATH = os.path.join(save_folder_path,f"{page}.pdf")
+        new_folder_name = str(save_folder_path).split('/')[-1]
+        SAVED_FILE_PATH_FOR_QRCODE = f"{self.domain_name}/media/{new_folder_name}/{page}.pdf"
+        SAVED_FILE_PATH_FOR_MODEL = f"{new_folder_name}/{page}.pdf"
+  
+  
+
+
+        writer = PdfWriter()
+        
+        with open(SAVED_FILE_PATH, "wb") as file:
+            qr_code_image = self.create_qrcode_image(SAVED_FILE_PATH_FOR_QRCODE)
+            print('---------->32',qr_code_image)
+            watermark_file = self.create_qrcode_pdf(qr_code_image=qr_code_image, **kwargs)
+            print('---------->33',watermark_file)
+            watermark = PdfReader(open(watermark_file, "rb"))
+            print('--------s1',watermark.pages[0])
+            print('--------sd',len(self.reader.pages))
+            self.reader.pages[0].merge_page(watermark.pages[0]) # merge qrcode pdf file to pdf file
+            writer.add_page(self.reader.pages[0]) # add page to pdf file
+            writer.write(file) # write pdf file
+            
+        return SAVED_FILE_PATH_FOR_MODEL
+
+
     
     def create_qrcode_image(self, save_folder_path):
         qr_code = qrcode.QRCode(
@@ -18,20 +59,27 @@ class PdfParser:
         qr_code.add_data(save_folder_path)
         qr_code.make(fit=True)
         qr_code_image = qr_code.make_image(fill_color="black", back_color="white")
-        qr_code_image.save(MEDIA_ROOT / "data.png")
-        return MEDIA_ROOT / "data.png"
+        qr_code_image.save(os.path.join(MEDIA_ROOT , "data.png"))
+        return os.path.join(MEDIA_ROOT , "data.png")
 
 
-    def create_qrcode_pdf(self,  qr_code_image, watermark_file:str='watermark.pdf', **kwargs):
+    def create_qrcode_pdf(self,  qr_code_image,  **kwargs):
         """
             Create pdf file with qrcode image
         """
         # if watermark_file doesn't exist, create it
-        watermark_file = MEDIA_ROOT / watermark_file
-        if not watermark_file.exists():
-            watermark_file.touch()
-
-        doc = Canvas(str(MEDIA_ROOT / watermark_file))
+        watermark_file = os.path.join(MEDIA_ROOT , self.file)
+        print('------------------34',watermark_file)
+        if not os.path.exists(watermark_file):
+            print('------------------1')
+            try:
+                with open(watermark_file,'a') as file:
+                    file.write('Bu yangi fayl.')
+                    return f'{watermark_file} fayli yaratildi va ma\"lumotlar yozildi.'
+            except IOError as e:
+                return f'Xatolik yuz berdi: {e}'
+       
+        doc = Canvas(os.path.join((watermark_file)))
         regular_font = "Times-Bold"
         font_size=12
 
@@ -45,11 +93,7 @@ class PdfParser:
             data_1 = kwargs.get('data_1', '')
             data_2 = kwargs.get('data_2', '')
 
-            # data = kwargs.get('data_2', '').split(' ')
-            # data.insert(2,'\n')
-          
-            # data_2=' '.join(data)
-            # print(data_2)
+
             
             #coordinates
             x_path_1 = kwargs.get('x_path_1', 0)
