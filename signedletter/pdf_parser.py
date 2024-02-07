@@ -21,26 +21,24 @@ class PdfParser:
             Create pdf file with qrcode image
         """
         # Get the watermark file you just created
-
-        x=str(save_folder_path).split("\\")[-1]
         SAVED_FILE_PATH = os.path.join(save_folder_path,f"{page}.pdf")
         new_folder_name = str(save_folder_path).split('/')[-1]
         SAVED_FILE_PATH_FOR_QRCODE = f"{self.domain_name}/media/{new_folder_name}/{page}.pdf"
         SAVED_FILE_PATH_FOR_MODEL = f"{new_folder_name}/{page}.pdf"
+      
   
   
 
 
         writer = PdfWriter()
         
-        with open(SAVED_FILE_PATH, "wb") as file:
+        with open(SAVED_FILE_PATH,'wb') as file:
             qr_code_image = self.create_qrcode_image(SAVED_FILE_PATH_FOR_QRCODE)
-            print('---------->32',qr_code_image)
             watermark_file = self.create_qrcode_pdf(qr_code_image=qr_code_image, **kwargs)
-            print('---------->33',watermark_file)
             watermark = PdfReader(open(watermark_file, "rb"))
-            print('--------s1',watermark.pages[0])
-            print('--------sd',len(self.reader.pages))
+            
+  
+
             self.reader.pages[0].merge_page(watermark.pages[0]) # merge qrcode pdf file to pdf file
             writer.add_page(self.reader.pages[0]) # add page to pdf file
             writer.write(file) # write pdf file
@@ -69,17 +67,20 @@ class PdfParser:
         """
         # if watermark_file doesn't exist, create it
         watermark_file = os.path.join(MEDIA_ROOT , self.file)
-        print('------------------34',watermark_file)
+
+
         if not os.path.exists(watermark_file):
-            print('------------------1')
+            
             try:
                 with open(watermark_file,'a') as file:
-                    file.write('Bu yangi fayl.')
-                    return f'{watermark_file} fayli yaratildi va ma\"lumotlar yozildi.'
+                    file.write('Yangi pdf fayl bush holatda yaratildi')
+                    one_pdf=watermark_file.split('/')[-1]
+                    return f'{one_pdf} fayli yaratildi ammo ishi bumbush: sababi esa, bazada bunday fayl mavjud emas'
             except IOError as e:
                 return f'Xatolik yuz berdi: {e}'
        
-        doc = Canvas(os.path.join((watermark_file)))
+        doc = Canvas(watermark_file)
+        
         regular_font = "Times-Bold"
         font_size=12
 

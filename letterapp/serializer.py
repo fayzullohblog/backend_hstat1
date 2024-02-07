@@ -27,7 +27,8 @@ class PdfFileTemplateSerializer(serializers.ModelSerializer):
             'signed_state',
             'inn_number',
             'soato',
-            'pdf_file'
+            'pdf_file',
+            'id',
         ]
 
 

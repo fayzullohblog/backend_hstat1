@@ -82,8 +82,8 @@ class PdfFileTemplateView(generics.CreateAPIView):
                     return Response(data={'message':'Zarik baza yaratilmagan'})
               
                 template_pk1=request.session.get('template_pk1')
-                typeletter_pk=request.session.get('typeletter_pk')   #TODO: sesionlar saq;anib qolayabdi
-                print('------------_____>',template_pk1,typeletter_pk)
+                typeletter_pk=request.session.get('typeletter_pk')   #TODO: sesionlar saqanib qilayabdi.  
+                print('------------_____>',template_pk1,typeletter_pk)      
                 user=self.request.user
                
                 domain_name=request.META['HTTP_HOST']
