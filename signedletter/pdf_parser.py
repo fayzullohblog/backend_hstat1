@@ -12,7 +12,6 @@ class PdfParser:
     def __init__(self, file, domain_name):
         self.file = os.path.join(MEDIA_ROOT,file)
         self.domain_name = domain_name
-        print('--------2',self.file)
         self.reader = PdfReader(self.file)
 
 
@@ -21,10 +20,10 @@ class PdfParser:
             Create pdf file with qrcode image
         """
         # Get the watermark file you just created
-        SAVED_FILE_PATH = os.path.join(save_folder_path,f"{page}.pdf")
+        SAVED_FILE_PATH = os.path.join(save_folder_path,f"{page}")
         new_folder_name = str(save_folder_path).split('/')[-1]
-        SAVED_FILE_PATH_FOR_QRCODE = f"{self.domain_name}/media/{new_folder_name}/{page}.pdf"
-        SAVED_FILE_PATH_FOR_MODEL = f"{new_folder_name}/{page}.pdf"
+        SAVED_FILE_PATH_FOR_QRCODE = f"{self.domain_name}/media/{new_folder_name}/{page}"
+        SAVED_FILE_PATH_FOR_MODEL = f"{new_folder_name}/{page}"
       
   
   
@@ -42,6 +41,7 @@ class PdfParser:
             self.reader.pages[0].merge_page(watermark.pages[0]) # merge qrcode pdf file to pdf file
             writer.add_page(self.reader.pages[0]) # add page to pdf file
             writer.write(file) # write pdf file
+
             
         return SAVED_FILE_PATH_FOR_MODEL
 

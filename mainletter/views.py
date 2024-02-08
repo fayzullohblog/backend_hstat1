@@ -31,7 +31,7 @@ class TemplateRetrieveAPIView(generics.RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         pk = self.kwargs.get('pk')
 
-        template_instance = self.queryset.filter(typeletter__id=pk).all()
+        template_instance = self.queryset.filter(typeletter__id=pk,user=self.request.user).all()
         
         serializer = self.serializer_class(template_instance,many=True)
 
@@ -54,13 +54,15 @@ class TemplateRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         if template_pk1 is None or typeletter_pk is None:
             return Response({'status': 'don\'t gave name id'}, status=status.HTTP_400_BAD_REQUEST)
 
-        typeletter = get_object_or_404(TypeLetter, id=typeletter_pk)
-        template_instance = get_object_or_404(self.queryset, typeletter__name=typeletter, id=template_pk1,user=user)
 
+        try:
+            typeletter = get_object_or_404(TypeLetter, id=typeletter_pk)
+            template_instance = get_object_or_404(self.queryset, typeletter__name=typeletter, id=template_pk1,user=user)
 
-
-        serializer = self.serializer_class(template_instance)
-        return Response(serializer.data)
+            serializer = self.serializer_class(template_instance)
+            return Response(serializer.data)
+        except:
+            return Response({'message':'Bu turdagi xisoblar ruyxati mavjud emas'})
     
 
     def put(self, request, *args, **kwargs):
@@ -69,24 +71,29 @@ class TemplateRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
 
         if template_pk1 is None or typeletter_pk is None:
             return Response({'status': 'don\'t gave name id'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
 
-        typeletter = get_object_or_404(TypeLetter, id=typeletter_pk)
-        template_instance = get_object_or_404(self.queryset, typeletter__name=typeletter, id=template_pk1)
-
-        request.session['template_pk1']=template_instance.id
-        request.session['typeletter_pk']=typeletter.id
-
-
-        body_data = request.data.get('body', None)
-
-        if body_data is not None:
-            template_instance.body = body_data
-            template_instance.save()
-
-        serializer = self.serializer_class(template_instance, partial=True)
-        return Response(serializer.data)
+            typeletter = get_object_or_404(TypeLetter, id=typeletter_pk)
+            template_instance = get_object_or_404(self.queryset, typeletter__name=typeletter, id=template_pk1)
+            
+            request.session['template_pk1']=template_instance.id
+            request.session['typeletter_pk']=typeletter.id
 
 
+            body_data = request.data.get('body', None)
+
+            if body_data is not None:
+                template_instance.body = body_data
+                template_instance.save()
+
+            serializer = self.serializer_class(template_instance, partial=True)
+            return Response(serializer.data)
+
+        except:
+            return Response({'message':'Mavjud bulmagan xisob ruyxati uchun , xech nimani o\'zgartira olmaysiz'})
+           
+       
 
 class TemplateCreateView(generics.CreateAPIView):
     queryset=Template.objects.all()

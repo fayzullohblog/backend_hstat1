@@ -6,7 +6,7 @@ from accountapp.models import MyUser
 
 class SignedPdf(BaseModel):
     user=models.ForeignKey(MyUser,on_delete=models.CASCADE)
-    pdf=models.FileField(upload_to='pdfletterinstruction/signed')
+    pdf=models.FileField()
 
 
 class UnSignedPdfurl(BaseModel):

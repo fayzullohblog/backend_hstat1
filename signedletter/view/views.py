@@ -133,20 +133,25 @@ class PdfFileTemplateSignedUpdateApiView(APIView):
                 except PdfFileTemplate.DoesNotExist:
                     return Response({'status': f'PdfFileTemplate with id {pdf_file_id} does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
-
                 pdf_file_path=pdf_file_instance.pdf_file.path
-                new_folder_name=pdf_file_instance.user.username
+                pdf_file_name=pdf_file_path.split('/')[-1]
+                new_folder_name=pdf_file_instance.user
+
                 
-                new_folder = os.path.join(MEDIA_ROOT,new_folder_name)
+              
+                new_folder = os.path.join(MEDIA_ROOT,new_folder_name.username)
+               
+
                 if not  os.path.exists(new_folder):
                     os.mkdir(new_folder)
                 
                 
                 pdf_file=PdfParser(pdf_file_path,domain_name)
-                # pdf_file_instance.signed_state=True
+              
                 pdf_file.create_pdf(
                                 save_folder_path=new_folder,
-                                page=pdf_file_id,
+                                # page=pdf_file_id,
+                                page=pdf_file_name,
 
                                 data_1=request.user.first_name, 
                                 x_path_1=420, y_path_1=130,
@@ -154,6 +159,9 @@ class PdfFileTemplateSignedUpdateApiView(APIView):
                                 data_2=request.user.username,
                                 x_path_2=80, y_path_2=130
                                 )
+                
+                SignedPdf.objects.create(user=new_folder_name,pdf=f'{new_folder_name.username}/{pdf_file_name}')
+                pdf_file_instance.signed_state=True
                 pdf_file_instance.save()
 
                 
