@@ -145,8 +145,8 @@ class PdfFileTemplateSignedUpdateApiView(APIView):
                 if not  os.path.exists(new_folder):
                     os.mkdir(new_folder)
                 
-                
-                pdf_file=PdfParser(pdf_file_path,domain_name)
+                user=self.request.user
+                pdf_file=PdfParser(pdf_file_path,domain_name,user)
               
                 pdf_file.create_pdf(
                                 save_folder_path=new_folder,

@@ -9,10 +9,11 @@ import os
 
 class PdfParser:
 
-    def __init__(self, file, domain_name):
+    def __init__(self, file, domain_name,user):
         self.file = os.path.join(MEDIA_ROOT,file)
         self.domain_name = domain_name
         self.reader = PdfReader(self.file)
+        self.user=user
 
 
     def create_pdf(self, save_folder_path, page, **kwargs)->str:
@@ -91,21 +92,29 @@ class PdfParser:
      
         if kwargs:
             #data
-            data_1 = kwargs.get('data_1', '')
-            data_2 = kwargs.get('data_2', '')
+            data_1 = self.user.full_name()
+            data_2 = self.user.party_name
 
 
             
             #coordinates
             x_path_1 = kwargs.get('x_path_1', 0)
             y_path_1 = kwargs.get('y_path_1', 0)
-
+            
             x_path_2 = kwargs.get('x_path_2', 0)
             y_path_2 = kwargs.get('y_path_2', 0)
             #draw data
+            print ("------------------234",data_1)
             doc.drawString(x_path_1, y_path_1, data_1)
             doc.drawString(x_path_2, y_path_2, 'Boshqarma boshlig\'ining')
             doc.drawString(88, 115, data_2)
+
+            regular_font_data3="Helvetica"
+            font_size_data3=8
+            
+            # doc.setFont(regular_font_data3,font_size_data3)
+            # data_3 = self.user.user_number_litter
+            # doc.drawString(540, 728, data_3)
             
             #TODO: add more data to pdf file
         doc.save()

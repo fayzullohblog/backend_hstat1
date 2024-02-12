@@ -45,6 +45,10 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self) -> str:
         return self.username
+    
+
+    def full_name(self):
+        return f'{self.first_name[0]}.{self.last_name}'
 
 
     #     "Is the user a member of staff?"
