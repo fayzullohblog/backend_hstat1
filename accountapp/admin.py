@@ -29,16 +29,14 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
     
 
-    # The fields to be used in displaying the User model.
-    # These override the definitions on the base UserAdmin
-    # that reference specific fields on auth.User.
-    list_display = ['username','is_superuser','is_staff',"is_admin",'is_active','is_boss']
-    list_filter = ["is_admin"]
+
+    list_display = ['username','is_superuser','is_staff','is_active','is_boss']
+    list_filter = ["is_staff"]
 
     fieldsets = [
         (None, {"fields": ["password",'username',]}),
         ("Personal info", {"fields": ["first_name",'last_name','phone_number','user_number_litter','party_name']}),
-        ("Permissions", {"fields": ["is_admin",'is_active','is_superuser','is_staff','is_boss']}),
+        ("Permissions", {"fields": ['is_active','is_superuser','is_staff','is_boss']}),
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -54,14 +52,14 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ["user_number_litter"]
     ordering = ["user_number_litter"]
     filter_horizontal = []
-    list_editable=['is_staff',"is_admin",'is_active','is_superuser','is_boss']
+    list_editable=['is_staff','is_active','is_superuser','is_boss']
 
 
 
     def _allow_edit(self, obj=None):
         if not obj:
             return True
-        return  (obj.is_staff or obj.is_superuser or obj.is_active)
+        return  (obj.is_superuser or obj.is_active)
 
     def has_change_permission(self, request, obj=None):
         return self._allow_edit(obj)

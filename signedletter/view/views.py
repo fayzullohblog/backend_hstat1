@@ -34,7 +34,7 @@ class PartyUserListApiView(generics.ListAPIView):
     
 
     def get(self, request, *args, **kwargs):
-        queryset=self.queryset.filter(is_admin=True,is_superuser=False,is_active=True)
+        queryset=self.queryset.filter(is_staff=True,is_superuser=False,is_active=True)
         serializer=self.serializer_class(queryset,many=True).data
         return Response({'result':serializer})
 

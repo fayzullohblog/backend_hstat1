@@ -52,7 +52,7 @@ class UserChangeForm(forms.ModelForm):
                     "password",
                     'username',
                     "is_active", 
-                    "is_admin",
+                    "is_staff",
                     
                     ]
 
