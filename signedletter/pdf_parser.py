@@ -33,17 +33,22 @@ class PdfParser:
         writer = PdfWriter()
         
         with open(SAVED_FILE_PATH,'wb') as file:
+            print('--------------->',SAVED_FILE_PATH)
             qr_code_image = self.create_qrcode_image(SAVED_FILE_PATH_FOR_QRCODE)
             watermark_file = self.create_qrcode_pdf(qr_code_image=qr_code_image, **kwargs)
             watermark = PdfReader(open(watermark_file, "rb"))
             
-  
-
+        
             self.reader.pages[0].merge_page(watermark.pages[0]) # merge qrcode pdf file to pdf file
             writer.add_page(self.reader.pages[0]) # add page to pdf file
+            print('--------->',file)
             writer.write(file) # write pdf file
 
-            
+             
+        with open(SAVED_FILE_PATH,'+rb') as file:
+            d=file.read()
+            print('-----------34',d)
+
         return SAVED_FILE_PATH_FOR_MODEL
 
 
@@ -104,7 +109,7 @@ class PdfParser:
             x_path_2 = kwargs.get('x_path_2', 0)
             y_path_2 = kwargs.get('y_path_2', 0)
             #draw data
-            print ("------------------234",data_1)
+        
             doc.drawString(x_path_1, y_path_1, data_1)
             doc.drawString(x_path_2, y_path_2, 'Boshqarma boshlig\'ining')
             doc.drawString(88, 115, data_2)

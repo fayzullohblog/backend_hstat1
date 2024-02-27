@@ -173,6 +173,18 @@ class PdfFileTemplateSignedUpdateApiView(APIView):
             return Response({'status': f'Error: {e}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
+
+class PdffileTemplateUpdateStateField(generics.RetrieveUpdateAPIView):
+    pass
+
+
+class PdfFileTemplateStateFieldListApiview(generics.ListAPIView):
+    pass
+    
+
+
+
 # {
 #     "pdf_file_updates": [
 #         {"id": 83, "signed_state": false},
@@ -187,3 +199,6 @@ class PdfFileTemplateSignedUpdateApiView(APIView):
 #         {"id": 79, "signed_state": false}
 #     ]
 # }
+        
+
+

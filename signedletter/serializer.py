@@ -38,6 +38,7 @@ class PdfFileTemplateUnSignedSerializer(serializers.ModelSerializer):
             'pdf_file',
             'template',
             'signed_state',
+            'state',
         ]
         read_only_fields=(
             'id',
