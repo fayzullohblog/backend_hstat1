@@ -13,9 +13,9 @@ COPY . /app/
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 
-RUN mkdir -p /app/staticfiles
+# RUN mkdir -p /app/staticfiles
 
-RUN python manage.py collectstatic --noinput --clear
+# RUN python manage.py collectstatic --noinput --clear
 
 EXPOSE 8000
 
