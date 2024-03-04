@@ -126,7 +126,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://reportx.hsat.uz",  # Loyhamning manzili manzili
     "http://localhost:5173",
     "http://localhost:5174",   # Localhost manzili 
-    'https://statistics-front.vercel.app',
+    'https://statistics-crm.vercel.app'
+    
 ]
 
 CORS_ALLOW_METHODS = [
