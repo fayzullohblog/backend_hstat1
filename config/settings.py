@@ -126,7 +126,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://reportx.hsat.uz",  # Loyhamning manzili manzili
     "http://localhost:5173",
     "http://localhost:5174",   # Localhost manzili 
-    'https://statistics-front.vercel.app',
+    'https://statistics-crm.vercel.app'
+    
 ]
 
 CORS_ALLOW_METHODS = [
@@ -223,6 +224,10 @@ STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 # django 4.2+ whitenoise 
 STORAGES = {
     # ...
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },

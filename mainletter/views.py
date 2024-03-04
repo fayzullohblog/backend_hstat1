@@ -58,11 +58,11 @@ class TemplateRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         try:
             typeletter = get_object_or_404(TypeLetter, id=typeletter_pk)
             template_instance = get_object_or_404(self.queryset, typeletter__name=typeletter, id=template_pk1,user=user)
-
+            
             serializer = self.serializer_class(template_instance)
             return Response(serializer.data)
         except:
-            return Response({'message':'Bu turdagi xisoblar ruyxati mavjud emas'})
+            return Response ({'message':'Bu turdagi xisoblar ruyxati mavjud emas'},status=status.HTTP_404_NOT_FOUND)
     
 
     def put(self, request, *args, **kwargs):

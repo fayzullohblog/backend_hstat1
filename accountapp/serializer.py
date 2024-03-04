@@ -10,20 +10,20 @@ class MyTokenObtainPairSerializer(serializers.TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user) -> Token:
         token=super().get_token(user)
-        print('------------>',user.is_boss)
+  
         token['username']=user.username
         token['is_staff']=user.is_staff
         token['is_superuser']=user.is_superuser
         token['is_active']=user.is_active
         token['is_boss']=user.is_boss
         
-        token_string = str(token)
 
+        # # Decode the token
+        # token_string = str(token)
+        # decoded_token = decode_jwt_access_token(token_string)
+        # print('----------->', decoded_token)
  
 
-        # Decode the token
-        decoded_token = decode_jwt_access_token(token_string)
-        print('----------->', decoded_token)
         return token     
 
 def decode_jwt_access_token(token):

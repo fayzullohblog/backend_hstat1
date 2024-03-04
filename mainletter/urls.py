@@ -11,6 +11,5 @@ urlpatterns = [
     path('template-create/',TemplateCreateView.as_view()),
     path('typeletter/<int:pk>/',TemplateRetrieveAPIView.as_view()),
     path('typeletter/<int:pk>/<int:pk1>/',TemplateRetrieveUpdateAPIView.as_view()),
-
-   
-]
+    
+    ]
