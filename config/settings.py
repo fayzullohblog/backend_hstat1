@@ -356,7 +356,7 @@ INTERNAL_IPS = [
 
 # WKHTMLTOPDF
 
-WKHTMLTOPDF_CMD = '/path/to/my/wkhtmltopdf'
+WKHTMLTOPDF_CMD = '/home/hsatuz12/virtualenv/reportx.hsat.uz/django/3.9/lib/python3.9/site-packages/wkhtmltopdf'
 
 WKHTMLTOPDF_CMD_OPTIONS = {
     'quiet': True,
