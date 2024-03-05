@@ -15,6 +15,7 @@ django-qr-code==4.0.1
 django-qrcode==0.3
 django-rest-swagger==2.2.0
 django-tinymce==3.7.1
+django-wkhtmltopdf==3.4.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
 docutils==0.20.1
