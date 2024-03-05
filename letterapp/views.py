@@ -23,7 +23,7 @@ from .serializer import (
 from rest_framework import generics, status
 from django.template.loader import render_to_string
 
-import pdfkit
+
 from django.template.loader import get_template
 from .generate_pdf import generate_pdf
 

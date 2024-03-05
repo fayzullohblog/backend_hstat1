@@ -38,7 +38,6 @@ def generate_pdf(
 
     print('---------------------234','DDDDD')
     user=MyUser.objects.get(username=request.user)
-    print('-----------45',user)
     # try:
     template=Template.objects.get(
         user=user,
@@ -46,7 +45,7 @@ def generate_pdf(
         typeletter_id=typeletter_pk,
 
         )
-    print('----------------34343434',template)
+
 
     
     template_html=template.body.format(
@@ -65,10 +64,10 @@ def generate_pdf(
             )
 
     # file path for save 
-    full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}'
-    pdf_path=f'{full_letterinstruction_pdf_path}{file_name}.pdf'
+    full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}{file_name}.pdf'
+    # pdf_path=f'{full_letterinstruction_pdf_path}{file_name}.pdf'
 
-    pdfkit.from_string(template_html,pdf_path,options=options)
+    pdfkit.from_string(template_html,full_letterinstruction_pdf_path,options=options)
 
     # file url for see 
     pdf_url=f'{pdf_file_path}{file_name}.pdf'
