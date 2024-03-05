@@ -67,7 +67,7 @@ def generate_pdf(
     full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}{file_name}.pdf'
     # pdf_path=f'{full_letterinstruction_pdf_path}{file_name}.pdf'
 
-    pdfkit.from_string(template_html,full_letterinstruction_pdf_path,options=options)
+    pdfkit.from_string(template_html,full_letterinstruction_pdf_path,options=options,verbose=True)
 
     # file url for see 
     pdf_url=f'{pdf_file_path}{file_name}.pdf'
