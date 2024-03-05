@@ -39,43 +39,43 @@ def generate_pdf(
     print('---------------------234','DDDDD')
     user=MyUser.objects.get(username=request.user)
     print('-----------45',user)
-    try:
-        template=Template.objects.get(
-            user=user,
-            id=template_pk1,
-            typeletter_id=typeletter_pk,
+    # try:
+    template=Template.objects.get(
+        user=user,
+        id=template_pk1,
+        typeletter_id=typeletter_pk,
 
-            )
-        print('----------------34343434',template)
+        )
+    print('----------------34343434',template)
+
     
-        
-        template_html=template.body.format(
-                                created_date=timezone.now().strftime('%Y-%m-%d'),
-                                letter_date=template.report_date,
+    template_html=template.body.format(
+                            created_date=timezone.now().strftime('%Y-%m-%d'),
+                            letter_date=template.report_date,
 
-                                adress=adress,
-                                street=street,
-                                company_name=company_name,
-                                inn_number=inn_number,
-                                phone_number=phone_number,
-                                letter_title=template.title,
-                                admin_number=request.user.user_number_litter,
-                                letter_number=file_name,
-                                
-                )
+                            adress=adress,
+                            street=street,
+                            company_name=company_name,
+                            inn_number=inn_number,
+                            phone_number=phone_number,
+                            letter_title=template.title,
+                            admin_number=request.user.user_number_litter,
+                            letter_number=file_name,
+                            
+            )
 
-        # file path for save 
-        full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}'
-        pdf_path=f'{full_letterinstruction_pdf_path}{file_name}.pdf'
+    # file path for save 
+    full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}'
+    pdf_path=f'{full_letterinstruction_pdf_path}{file_name}.pdf'
 
-        pdfkit.from_string(template_html,pdf_path,options=options)
+    pdfkit.from_string(template_html,pdf_path,options=options)
 
-        # file url for see 
-        pdf_url=f'{pdf_file_path}{file_name}.pdf'
+    # file url for see 
+    pdf_url=f'{pdf_file_path}{file_name}.pdf'
 
 
-        return  pdf_url
-    except:
-        raise Exception('Siz xisobatlar ruyxatini yaratmagansiz !!!')
+    return  pdf_url
+    # except:
+    #     raise Exception('Siz xisobatlar ruyxatini yaratmagansiz !!!')
 
 
