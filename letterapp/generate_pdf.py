@@ -7,6 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
 from accountapp.models import MyUser
+from django.conf import settings
 # Define LetterInstructions' pdf file utl
 pdf_file_path=PdfFilePath.pdf_instraction_path
 media_root=settings.MEDIA_ROOT
@@ -66,16 +67,17 @@ def generate_pdf(
     # file path for save 
     full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}{file_name}.pdf'
     # pdf_path=f'{full_letterinstruction_pdf_path}{file_name}.pdf'
-    # config=pdfkit.configuration(wkhtmltopdf='')
+    config = pdfkit.configuration(wkhtmltopdf='/home/formal/python/project/backend_hstat1/venv/bin/wkhtmltopdf')
+
     pdfkit.from_string(template_html,
                        full_letterinstruction_pdf_path,
                        options=options,
-                    #    verbose=True,
-                    #    configuration=config
+                       configuration=config
                        
                        )
-    # pdfkit.from_string(template_html,full_letterinstruction_pdf_path,options=options,verbose=True)
-    # file url for see 
+
+    d=os.path.join(settings.BASE_DIR)
+    print(d)
     pdf_url=f'{pdf_file_path}{file_name}.pdf'
 
 
