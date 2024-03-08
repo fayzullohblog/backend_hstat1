@@ -175,22 +175,33 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
-
-
+# jasur server
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hsatuz12_reportx',
-        'USER': 'hsatuz12_reportxusername',
-        'PASSWORD': 'reportxpassword',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'fayzulloh', 
+        'USER': 'postgres',
+        'PASSWORD': 'parol1234',
+        'HOST': '45.55.64.16', 
+        'PORT': '5432',
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'hsatuz12_reportx',
+#         'USER': 'hsatuz12_reportxusername',
+#         'PASSWORD': 'reportxpassword',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+
+#     }
+# }
 
 
 # Password validation
