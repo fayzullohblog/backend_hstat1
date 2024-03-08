@@ -3,7 +3,11 @@ from rest_framework import generics
 
 from django.shortcuts import get_object_or_404
 
-from .serializer import TypeLetterSerializer,TemplateSerializer,FullTemplateSerializer,TemplateCreateSerializer
+from .serializer import (
+            TypeLetterSerializer,TemplateSerializer,
+            FullTemplateSerializer,TemplateCreateSerializer,
+            ZarikSerializer,ZarikUpdateSerializer,
+)
 from .models import TypeLetter,Template
 from accountapp.models import MyUser
 
@@ -11,8 +15,10 @@ from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-import datetime
-from django.core.exceptions  import ValidationError
+from .permissions import OnlySuperUserOrStaff
+
+
+from .models import Zarik
 #  Create your views here.
 
 
@@ -139,16 +145,25 @@ class TemplateCreateView(generics.CreateAPIView):
 
 
 
+class ZarikListApiView(generics.ListAPIView):
+    serializer_class=ZarikSerializer
+    queryset=Zarik.objects.all()
+    permission_classes=[OnlySuperUserOrStaff]
 
 
+class ZarikUpdateApiView(generics.RetrieveUpdateAPIView):
+    serializer_class=ZarikUpdateSerializer
+    queryset=Zarik.objects.all()
+    permission_classes=[OnlySuperUserOrStaff]
 
 
-
+    def get_object(self):
+        id=self.kwargs['pk']
+        
+        obj=self.queryset.get(id=id)
+        return obj
     
 
-    
-
-    
 
 
     

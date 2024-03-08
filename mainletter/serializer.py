@@ -1,5 +1,6 @@
+
 from rest_framework import serializers
-from .models import TypeLetter,Template
+from .models import TypeLetter,Template,Zarik
 from letterapp.models import PdfFileTemplate
 
 
@@ -29,3 +30,16 @@ class TemplateCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model=Template
         fields=['typeletter','title','body','report_date']
+
+
+class ZarikSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Zarik
+        fields=['company_name','id']
+
+
+class ZarikUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Zarik
+        # fields=['company_name','adress','street','phone_number','inn_number','email','soato']
+        fields='__all__'

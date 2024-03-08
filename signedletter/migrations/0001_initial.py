@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="LetterCourt",
+            name="UnSignedPdfurl",
             fields=[
                 (
                     "id",
@@ -28,22 +28,31 @@ class Migration(migrations.Migration):
                 ),
                 ("create_date", models.DateTimeField(auto_now=True)),
                 ("update_date", models.DateTimeField(auto_now_add=True)),
-                ("letter_name", models.CharField(max_length=50)),
-                ("litter_number", models.CharField(max_length=15, unique=True)),
-                ("company_name", models.CharField(max_length=150)),
-                ("ptsh", models.CharField(max_length=15)),
+                ("pdf_url", models.CharField(max_length=500)),
+            ],
+            options={
+                "abstract": False,
+            },
+        ),
+        migrations.CreateModel(
+            name="SignedPdf",
+            fields=[
                 (
-                    "stir_number",
-                    models.PositiveBigIntegerField(blank=True, default=0, null=True),
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
                 ),
-                ("report_name", models.CharField(max_length=100)),
-                ("report_date", models.DateTimeField()),
-                ("company_own", models.CharField(max_length=50)),
+                ("create_date", models.DateTimeField(auto_now=True)),
+                ("update_date", models.DateTimeField(auto_now_add=True)),
+                ("pdf", models.FileField(upload_to="")),
                 (
                     "user",
                     models.ForeignKey(
-                        null=True,
-                        on_delete=django.db.models.deletion.SET_NULL,
+                        on_delete=django.db.models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),

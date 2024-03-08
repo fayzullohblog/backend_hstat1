@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
-
+    
 
 
 
@@ -168,13 +168,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR ,'db.sqlite3'),
-#     }
-# }
-
 # jasur server
 DATABASES = {
     'default': {
@@ -184,8 +177,7 @@ DATABASES = {
         'PASSWORD': 'parol1234',
         'HOST': '45.55.64.16', 
         'PORT': '5432',
-    }
-}
+    }}
 
 
 # DATABASES = {
@@ -253,11 +245,12 @@ STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
-    
+
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
 
 
 
@@ -366,8 +359,8 @@ INTERNAL_IPS = [
 
 # WKHTMLTOPDF
 
-WKHTMLTOPDF_CMD = '/path/to/my/wkhtmltopdf'
+# WKHTMLTOPDF_CMD = '/home/hsatuz12/virtualenv/reportx.hsat.uz/django/3.9/lib/python3.9/site-packages/wkhtmltopdf'
 
-WKHTMLTOPDF_CMD_OPTIONS = {
-    'quiet': True,
-}
+# WKHTMLTOPDF_CMD_OPTIONS = {
+#     'quiet': True,
+# }
