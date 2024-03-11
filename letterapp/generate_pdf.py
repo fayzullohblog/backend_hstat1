@@ -67,12 +67,12 @@ def generate_pdf(
     # file path for save 
     full_letterinstruction_pdf_path=f'{media_root}{pdf_file_path}{file_name}.pdf'
     # pdf_path=f'{full_letterinstruction_pdf_path}{file_name}.pdf'
-    config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+    # config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
 
     pdfkit.from_string(template_html,
                        full_letterinstruction_pdf_path,
                        options=options,
-                       configuration=config
+                    #    configuration=config
                        
                        )
 
