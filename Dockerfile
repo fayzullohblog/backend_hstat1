@@ -5,6 +5,8 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
+RUN apt-get update
+RUN apt-get install wkhtmltopdf
 COPY req.txt /app/
 RUN pip install --no-cache-dir -r req.txt
 
