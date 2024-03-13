@@ -1,27 +1,7 @@
 FROM python:3.11
 
-# Install required dependencies for wkhtmltopdf
-RUN apk update && apk add --no-cache \
-    ca-certificates \
-    fontconfig \
-    libjpeg \
-    libpng \
-    libressl-dev \
-    libwebp \
-    libxcb \
-    libxml2 \
-    libxslt \
-    libgcc \
-    libstdc++ \
-    libx11 \
-    libxrender \
-    libxext \
-    ttf-dejavu \
-    ttf-droid \
-    ttf-freefont \
-    ttf-liberation \
-    ttf-ubuntu-font-family \
-    wkhtmltopdf
+# Install wkhtmltopdf from the alpine-wkhtmltopdf image
+FROM alpine-wkhtmltopdf
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
