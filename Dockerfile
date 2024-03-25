@@ -18,7 +18,7 @@ RUN set -e; \
         wkhtmltopdf \
         poppler-utils;
 COPY DockerVue/wkhtmltopdf /usr/bin/wkhtmltopdf
-COPY DockerVue/wkhtmltoimage /usr/bin/wkhtmltoimage
+# COPY DockerVue/wkhtmltoimage /usr/bin/wkhtmltoimage
 
 
 
