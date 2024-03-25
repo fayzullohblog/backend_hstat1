@@ -1,11 +1,8 @@
 FROM python:3.11
-# RUN wget https://s3.amazonaws.com/shopify-managemant-app/wkhtmltopdf-0.9.9-static-amd64.tar.bz2
-# RUN tar xvjf wkhtmltopdf-0.9.9-static-amd64.tar.bz2
-# RUN mv wkhtmltopdf-amd64 /usr/local/bin/wkhtmltopdf
-# RUN chmod +x /usr/local/bin/wkhtmltopdf
-
-RUN apt-get install -y wkhtmltopdf
-RUN apt-get install -y xvfb
+RUN wget https://s3.amazonaws.com/shopify-managemant-app/wkhtmltopdf-0.9.9-static-amd64.tar.bz2
+RUN tar xvjf wkhtmltopdf-0.9.9-static-amd64.tar.bz2
+RUN mv wkhtmltopdf-amd64 /usr/local/bin/wkhtmltopdf
+RUN chmod +x /usr/local/bin/wkhtmltopdf
 
 
 WORKDIR /app
