@@ -1,8 +1,30 @@
 FROM python:3.11
 
 # Install wkhtmltopdf from the alpine-wkhtmltopdf image
-FROM alpine-wkhtmltopdf
 
+RUN set -e; \
+        apk add --no-cache mariadb-connector-c-dev ;\
+        apk add --no-cache --virtual .build-deps \
+        gcc \
+        libc-dev \
+        linux-headers \
+        mariadb-dev \
+        jpeg-dev \
+        zlib-dev \
+        libffi-dev \
+        musl-dev \
+        libxml2-dev \
+        libxslt-dev \
+        wkhtmltopdf \
+        poppler-utils;
+COPY docker_files/wkhtmltopdf /usr/bin/wkhtmltopdf
+COPY docker_files/wkhtmltoimage /usr/bin/wkhtmltoimage
+
+
+
+RUN set -e; \
+    pip install --upgrade pip; \
+    pip install -r requirements.txt;
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
