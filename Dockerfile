@@ -17,8 +17,8 @@ RUN set -e; \
         libxslt-dev \
         wkhtmltopdf \
         poppler-utils;
-COPY Dockerfile/wkhtmltopdf /usr/bin/wkhtmltopdf
-COPY Dockerfile/wkhtmltoimage /usr/bin/wkhtmltoimage
+COPY DockerVue/wkhtmltopdf /usr/bin/wkhtmltopdf
+COPY DockerVue/wkhtmltoimage /usr/bin/wkhtmltoimage
 
 
 
