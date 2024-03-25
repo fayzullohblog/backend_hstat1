@@ -369,17 +369,9 @@ WKHTMLTOPDF_CMD_OPTIONS = {
 
 
 
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'loggers': {
-        'django': {
-            'handlers':['files_info','files_debug'],
-            'propagate': True,
-            'level':'INFO',
-        },
-    },
     'handlers': {
         'files_info': {
             'level': 'INFO',
@@ -394,10 +386,17 @@ LOGGING = {
             'formatter': 'mereva',
         },
     },
+    'loggers': {
+        'django': {
+            'handlers': ['files_info', 'files_debug'],
+            'level': 'INFO',  # Bu darajani DEBUG o'rniga INFO deb o'zgartiring
+            'propagate': True,
+        },
+    },
     'formatters': {
         'mereva': {
             'format': '{levelname} {asctime} {module} {message}',
             'style': '{',
-        }
+        },
     },
 }
